@@ -1,0 +1,783 @@
+{'exp_name': 'cmflow_cvpr', 'model': 'cmflow', 'num_points': 256, 'batch_size': 16, 'val_batch_size': 8, 'epochs': 60, 'lr': 0.001, 'decay_epochs': 1, 'decay_rate': 0.9, 'cuda_device': '0', 'no_cuda': False, 'seed': 1234, 'num_workers': 8, 'eval': False, 'eval_split': 'test', 'dataset': 'vodDataset', 'train_set': 'train', 'dataset_path': '/home/zyw/preprocess_res/flow_smp/', 'vis': False, 'save_res': False, 'rigid_thres': 0.15, 'vr_thres': 0.3, 'stat_thres': 0.5, 'mini_clip_len': 5, 'update_len': 5, 'load_checkpoint': False, 'model_path': ''}
+train : 154
+val : 282
+====epoch: 0, learning rate: 0.001000====
+==starting training on the training set==
+{'exp_name': 'cmflow_cvpr', 'model': 'cmflow', 'num_points': 256, 'batch_size': 16, 'val_batch_size': 8, 'epochs': 60, 'lr': 0.001, 'decay_epochs': 1, 'decay_rate': 0.9, 'cuda_device': '0', 'no_cuda': False, 'seed': 1234, 'num_workers': 8, 'eval': False, 'eval_split': 'test', 'dataset': 'vodDataset', 'train_set': 'train', 'dataset_path': '/home/zyw/preprocess_res/flow_smp/', 'vis': False, 'save_res': False, 'rigid_thres': 0.15, 'vr_thres': 0.3, 'stat_thres': 0.5, 'mini_clip_len': 5, 'update_len': 5, 'load_checkpoint': False, 'model_path': ''}
+train : 154
+val : 282
+====epoch: 0, learning rate: 0.001000====
+==starting training on the training set==
+{'exp_name': 'cmflow_cvpr', 'model': 'cmflow', 'num_points': 256, 'batch_size': 16, 'val_batch_size': 8, 'epochs': 60, 'lr': 0.001, 'decay_epochs': 1, 'decay_rate': 0.9, 'cuda_device': '0', 'no_cuda': False, 'seed': 1234, 'num_workers': 8, 'eval': False, 'eval_split': 'test', 'dataset': 'vodDataset', 'train_set': 'train', 'dataset_path': '/home/zyw/preprocess_res/flow_smp/', 'vis': False, 'save_res': False, 'rigid_thres': 0.15, 'vr_thres': 0.3, 'stat_thres': 0.5, 'mini_clip_len': 5, 'update_len': 5, 'load_checkpoint': False, 'model_path': ''}
+train : 154
+val : 282
+====epoch: 0, learning rate: 0.001000====
+==starting training on the training set==
+{'exp_name': 'cmflow_cvpr', 'model': 'cmflow', 'num_points': 256, 'batch_size': 16, 'val_batch_size': 8, 'epochs': 60, 'lr': 0.001, 'decay_epochs': 1, 'decay_rate': 0.9, 'cuda_device': '0', 'no_cuda': False, 'seed': 1234, 'num_workers': 8, 'eval': False, 'eval_split': 'test', 'dataset': 'vodDataset', 'train_set': 'train', 'dataset_path': '/home/zyw/preprocess_res/flow_smp/', 'vis': False, 'save_res': False, 'rigid_thres': 0.15, 'vr_thres': 0.3, 'stat_thres': 0.5, 'mini_clip_len': 5, 'update_len': 5, 'load_checkpoint': False, 'model_path': ''}
+train : 154
+val : 282
+====epoch: 0, learning rate: 0.001000====
+==starting training on the training set==
+{'exp_name': 'cmflow_cvpr', 'model': 'cmflow', 'num_points': 256, 'batch_size': 16, 'val_batch_size': 8, 'epochs': 60, 'lr': 0.001, 'decay_epochs': 1, 'decay_rate': 0.9, 'cuda_device': '0', 'no_cuda': False, 'seed': 1234, 'num_workers': 8, 'eval': False, 'eval_split': 'test', 'dataset': 'vodDataset', 'train_set': 'train', 'dataset_path': '/home/zyw/preprocess_res/flow_smp/', 'vis': False, 'save_res': False, 'rigid_thres': 0.15, 'vr_thres': 0.3, 'stat_thres': 0.5, 'mini_clip_len': 5, 'update_len': 5, 'load_checkpoint': False, 'model_path': ''}
+train : 154
+val : 282
+====epoch: 0, learning rate: 0.001000====
+==starting training on the training set==
+{'exp_name': 'cmflow_cvpr', 'model': 'cmflow', 'num_points': 256, 'batch_size': 16, 'val_batch_size': 8, 'epochs': 60, 'lr': 0.001, 'decay_epochs': 1, 'decay_rate': 0.9, 'cuda_device': '0', 'no_cuda': False, 'seed': 1234, 'num_workers': 8, 'eval': False, 'eval_split': 'test', 'dataset': 'vodDataset', 'train_set': 'train', 'dataset_path': '/home/zyw/preprocess_res/flow_smp/', 'vis': False, 'save_res': False, 'rigid_thres': 0.15, 'vr_thres': 0.3, 'stat_thres': 0.5, 'mini_clip_len': 5, 'update_len': 5, 'load_checkpoint': False, 'model_path': ''}
+train : 154
+val : 282
+====epoch: 0, learning rate: 0.001000====
+==starting training on the training set==
+{'exp_name': 'cmflow_cvpr', 'model': 'cmflow', 'num_points': 256, 'batch_size': 16, 'val_batch_size': 8, 'epochs': 60, 'lr': 0.001, 'decay_epochs': 1, 'decay_rate': 0.9, 'cuda_device': '0', 'no_cuda': False, 'seed': 1234, 'num_workers': 8, 'eval': False, 'eval_split': 'test', 'dataset': 'vodDataset', 'train_set': 'train', 'dataset_path': '/home/zyw/preprocess_res/flow_smp/', 'vis': False, 'save_res': False, 'rigid_thres': 0.15, 'vr_thres': 0.3, 'stat_thres': 0.5, 'mini_clip_len': 5, 'update_len': 5, 'load_checkpoint': False, 'model_path': ''}
+train : 154
+val : 282
+====epoch: 0, learning rate: 0.001000====
+==starting training on the training set==
+{'exp_name': 'cmflow_cvpr', 'model': 'cmflow', 'num_points': 256, 'batch_size': 8, 'val_batch_size': 4, 'epochs': 30, 'lr': 0.001, 'decay_epochs': 1, 'decay_rate': 0.9, 'cuda_device': '0', 'no_cuda': False, 'seed': 1234, 'num_workers': 8, 'eval': False, 'eval_split': 'test', 'dataset': 'vodDataset', 'train_set': 'train', 'dataset_path': '/home/zyw/preprocess_res/flow_smp/', 'vis': False, 'save_res': False, 'rigid_thres': 0.15, 'vr_thres': 0.3, 'stat_thres': 0.5, 'mini_clip_len': 5, 'update_len': 5, 'load_checkpoint': False, 'model_path': ''}
+train : 154
+val : 282
+====epoch: 0, learning rate: 0.001000====
+==starting training on the training set==
+mean train loss: 1.774473
+==starting evaluation on the validation set==
+###The inference speed is 11.339ms per frame###
+mean RNE score: 0.148544
+best val score till now: 0.148544
+====epoch: 1, learning rate: 0.000900====
+==starting training on the training set==
+mean train loss: 1.536826
+==starting evaluation on the validation set==
+###The inference speed is 11.479ms per frame###
+mean RNE score: 0.144783
+best val score till now: 0.144783
+====epoch: 2, learning rate: 0.000810====
+==starting training on the training set==
+mean train loss: 1.456946
+==starting evaluation on the validation set==
+###The inference speed is 11.510ms per frame###
+mean RNE score: 0.140076
+best val score till now: 0.140076
+====epoch: 3, learning rate: 0.000729====
+==starting training on the training set==
+mean train loss: 1.390678
+==starting evaluation on the validation set==
+###The inference speed is 11.654ms per frame###
+mean RNE score: 0.158434
+====epoch: 4, learning rate: 0.000656====
+==starting training on the training set==
+mean train loss: 1.363002
+==starting evaluation on the validation set==
+###The inference speed is 11.486ms per frame###
+mean RNE score: 0.148635
+====epoch: 5, learning rate: 0.000590====
+==starting training on the training set==
+mean train loss: 1.331699
+==starting evaluation on the validation set==
+###The inference speed is 11.831ms per frame###
+mean RNE score: 0.155599
+====epoch: 6, learning rate: 0.000531====
+==starting training on the training set==
+mean train loss: 1.323514
+==starting evaluation on the validation set==
+###The inference speed is 11.814ms per frame###
+mean RNE score: 0.161081
+====epoch: 7, learning rate: 0.000478====
+==starting training on the training set==
+mean train loss: 1.286040
+==starting evaluation on the validation set==
+###The inference speed is 11.497ms per frame###
+mean RNE score: 0.144666
+====epoch: 8, learning rate: 0.000430====
+==starting training on the training set==
+mean train loss: 1.200144
+==starting evaluation on the validation set==
+###The inference speed is 11.788ms per frame###
+mean RNE score: 0.135550
+best val score till now: 0.135550
+====epoch: 9, learning rate: 0.000387====
+==starting training on the training set==
+mean train loss: 1.123437
+==starting evaluation on the validation set==
+###The inference speed is 11.872ms per frame###
+mean RNE score: 0.131741
+best val score till now: 0.131741
+====epoch: 10, learning rate: 0.000349====
+==starting training on the training set==
+mean train loss: 1.082332
+==starting evaluation on the validation set==
+###The inference speed is 11.440ms per frame###
+mean RNE score: 0.132680
+====epoch: 11, learning rate: 0.000314====
+==starting training on the training set==
+mean train loss: 1.023173
+==starting evaluation on the validation set==
+###The inference speed is 11.348ms per frame###
+mean RNE score: 0.129237
+best val score till now: 0.129237
+====epoch: 12, learning rate: 0.000282====
+==starting training on the training set==
+mean train loss: 0.954162
+==starting evaluation on the validation set==
+###The inference speed is 11.332ms per frame###
+mean RNE score: 0.125014
+best val score till now: 0.125014
+====epoch: 13, learning rate: 0.000254====
+==starting training on the training set==
+mean train loss: 0.888079
+==starting evaluation on the validation set==
+###The inference speed is 11.557ms per frame###
+mean RNE score: 0.145504
+====epoch: 14, learning rate: 0.000229====
+==starting training on the training set==
+mean train loss: 0.866251
+==starting evaluation on the validation set==
+###The inference speed is 11.780ms per frame###
+mean RNE score: 0.125360
+====epoch: 15, learning rate: 0.000206====
+==starting training on the training set==
+mean train loss: 0.809576
+==starting evaluation on the validation set==
+###The inference speed is 12.515ms per frame###
+mean RNE score: 0.126343
+====epoch: 16, learning rate: 0.000185====
+==starting training on the training set==
+mean train loss: 0.808679
+==starting evaluation on the validation set==
+###The inference speed is 11.439ms per frame###
+mean RNE score: 0.125942
+====epoch: 17, learning rate: 0.000167====
+==starting training on the training set==
+mean train loss: 0.783122
+==starting evaluation on the validation set==
+###The inference speed is 11.516ms per frame###
+mean RNE score: 0.137666
+====epoch: 18, learning rate: 0.000150====
+==starting training on the training set==
+mean train loss: 0.752915
+==starting evaluation on the validation set==
+###The inference speed is 11.541ms per frame###
+mean RNE score: 0.125378
+====epoch: 19, learning rate: 0.000135====
+==starting training on the training set==
+mean train loss: 0.746869
+==starting evaluation on the validation set==
+###The inference speed is 11.562ms per frame###
+mean RNE score: 0.119273
+best val score till now: 0.119273
+====epoch: 20, learning rate: 0.000122====
+==starting training on the training set==
+mean train loss: 0.734763
+==starting evaluation on the validation set==
+###The inference speed is 11.294ms per frame###
+mean RNE score: 0.123370
+====epoch: 21, learning rate: 0.000109====
+==starting training on the training set==
+mean train loss: 0.734019
+==starting evaluation on the validation set==
+###The inference speed is 11.727ms per frame###
+mean RNE score: 0.125479
+====epoch: 22, learning rate: 0.000098====
+==starting training on the training set==
+mean train loss: 0.718684
+==starting evaluation on the validation set==
+###The inference speed is 11.840ms per frame###
+mean RNE score: 0.128120
+====epoch: 23, learning rate: 0.000089====
+==starting training on the training set==
+mean train loss: 0.702262
+==starting evaluation on the validation set==
+###The inference speed is 11.592ms per frame###
+mean RNE score: 0.121156
+====epoch: 24, learning rate: 0.000080====
+==starting training on the training set==
+mean train loss: 0.694736
+==starting evaluation on the validation set==
+###The inference speed is 11.549ms per frame###
+mean RNE score: 0.128294
+====epoch: 25, learning rate: 0.000072====
+==starting training on the training set==
+mean train loss: 0.699535
+==starting evaluation on the validation set==
+###The inference speed is 12.179ms per frame###
+mean RNE score: 0.126698
+====epoch: 26, learning rate: 0.000065====
+==starting training on the training set==
+mean train loss: 0.684478
+==starting evaluation on the validation set==
+###The inference speed is 11.378ms per frame###
+mean RNE score: 0.121489
+====epoch: 27, learning rate: 0.000058====
+==starting training on the training set==
+mean train loss: 0.681681
+==starting evaluation on the validation set==
+###The inference speed is 11.684ms per frame###
+mean RNE score: 0.125229
+====epoch: 28, learning rate: 0.000052====
+==starting training on the training set==
+mean train loss: 0.672965
+==starting evaluation on the validation set==
+###The inference speed is 11.539ms per frame###
+mean RNE score: 0.123121
+====epoch: 29, learning rate: 0.000047====
+==starting training on the training set==
+mean train loss: 0.673803
+==starting evaluation on the validation set==
+###The inference speed is 11.795ms per frame###
+mean RNE score: 0.120343
+====best RNE score after 30 epochs: 0.119273====
+Max memory alocation: 2616.450048MB
+{'exp_name': 'cmflow_cvpr', 'model': 'cmflow', 'num_points': 256, 'batch_size': 8, 'val_batch_size': 8, 'epochs': 30, 'lr': 0.001, 'decay_epochs': 1, 'decay_rate': 0.9, 'cuda_device': '0', 'no_cuda': False, 'seed': 1234, 'num_workers': 8, 'eval': False, 'eval_split': 'test', 'dataset': 'vodDataset', 'train_set': 'train', 'dataset_path': '/home/zyw/preprocess_res/flow_smp/', 'vis': False, 'save_res': False, 'rigid_thres': 0.15, 'vr_thres': 0.3, 'stat_thres': 0.5, 'mini_clip_len': 5, 'update_len': 5, 'load_checkpoint': False, 'model_path': ''}
+train : 154
+val : 282
+====epoch: 0, learning rate: 0.001000====
+==starting training on the training set==
+mean train loss: 1.715327
+==starting evaluation on the validation set==
+###The inference speed is 10.366ms per frame###
+mean RNE score: 0.137889
+best val score till now: 0.137889
+====epoch: 1, learning rate: 0.000900====
+==starting training on the training set==
+mean train loss: 1.537898
+==starting evaluation on the validation set==
+###The inference speed is 9.795ms per frame###
+mean RNE score: 0.131011
+best val score till now: 0.131011
+====epoch: 2, learning rate: 0.000810====
+==starting training on the training set==
+mean train loss: 1.434587
+==starting evaluation on the validation set==
+###The inference speed is 9.666ms per frame###
+mean RNE score: 0.143435
+====epoch: 3, learning rate: 0.000729====
+==starting training on the training set==
+mean train loss: 1.402686
+==starting evaluation on the validation set==
+###The inference speed is 9.714ms per frame###
+mean RNE score: 0.163579
+====epoch: 4, learning rate: 0.000656====
+==starting training on the training set==
+mean train loss: 1.367816
+==starting evaluation on the validation set==
+###The inference speed is 9.678ms per frame###
+mean RNE score: 0.148099
+====epoch: 5, learning rate: 0.000590====
+==starting training on the training set==
+mean train loss: 1.333813
+==starting evaluation on the validation set==
+###The inference speed is 9.813ms per frame###
+mean RNE score: 0.161650
+====epoch: 6, learning rate: 0.000531====
+==starting training on the training set==
+mean train loss: 1.322695
+==starting evaluation on the validation set==
+###The inference speed is 9.629ms per frame###
+mean RNE score: 0.173763
+====epoch: 7, learning rate: 0.000478====
+==starting training on the training set==
+mean train loss: 1.292846
+==starting evaluation on the validation set==
+###The inference speed is 9.855ms per frame###
+mean RNE score: 0.131085
+====epoch: 8, learning rate: 0.000430====
+==starting training on the training set==
+mean train loss: 1.223444
+==starting evaluation on the validation set==
+###The inference speed is 9.629ms per frame###
+mean RNE score: 0.146315
+====epoch: 9, learning rate: 0.000387====
+==starting training on the training set==
+mean train loss: 1.159002
+==starting evaluation on the validation set==
+###The inference speed is 9.639ms per frame###
+mean RNE score: 0.157366
+====epoch: 10, learning rate: 0.000349====
+==starting training on the training set==
+mean train loss: 1.156061
+==starting evaluation on the validation set==
+###The inference speed is 9.875ms per frame###
+mean RNE score: 0.131843
+====epoch: 11, learning rate: 0.000314====
+==starting training on the training set==
+mean train loss: 1.073123
+==starting evaluation on the validation set==
+###The inference speed is 9.895ms per frame###
+mean RNE score: 0.127488
+best val score till now: 0.127488
+====epoch: 12, learning rate: 0.000282====
+==starting training on the training set==
+mean train loss: 0.936680
+==starting evaluation on the validation set==
+###The inference speed is 9.735ms per frame###
+mean RNE score: 0.134319
+====epoch: 13, learning rate: 0.000254====
+==starting training on the training set==
+mean train loss: 0.883676
+==starting evaluation on the validation set==
+###The inference speed is 9.674ms per frame###
+mean RNE score: 0.136087
+====epoch: 14, learning rate: 0.000229====
+==starting training on the training set==
+mean train loss: 0.848102
+==starting evaluation on the validation set==
+###The inference speed is 9.811ms per frame###
+mean RNE score: 0.123342
+best val score till now: 0.123342
+====epoch: 15, learning rate: 0.000206====
+==starting training on the training set==
+mean train loss: 0.822770
+==starting evaluation on the validation set==
+###The inference speed is 9.802ms per frame###
+mean RNE score: 0.132145
+====epoch: 16, learning rate: 0.000185====
+==starting training on the training set==
+mean train loss: 0.813301
+==starting evaluation on the validation set==
+###The inference speed is 9.881ms per frame###
+mean RNE score: 0.139133
+====epoch: 17, learning rate: 0.000167====
+==starting training on the training set==
+mean train loss: 0.795408
+==starting evaluation on the validation set==
+###The inference speed is 9.707ms per frame###
+mean RNE score: 0.141678
+====epoch: 18, learning rate: 0.000150====
+==starting training on the training set==
+mean train loss: 0.769465
+==starting evaluation on the validation set==
+###The inference speed is 9.595ms per frame###
+mean RNE score: 0.132929
+====epoch: 19, learning rate: 0.000135====
+==starting training on the training set==
+mean train loss: 0.761395
+==starting evaluation on the validation set==
+###The inference speed is 9.885ms per frame###
+mean RNE score: 0.131320
+====epoch: 20, learning rate: 0.000122====
+==starting training on the training set==
+mean train loss: 0.753843
+==starting evaluation on the validation set==
+###The inference speed is 9.931ms per frame###
+mean RNE score: 0.130554
+====epoch: 21, learning rate: 0.000109====
+==starting training on the training set==
+mean train loss: 0.740938
+==starting evaluation on the validation set==
+###The inference speed is 9.895ms per frame###
+mean RNE score: 0.133802
+====epoch: 22, learning rate: 0.000098====
+==starting training on the training set==
+mean train loss: 0.733592
+==starting evaluation on the validation set==
+###The inference speed is 9.724ms per frame###
+mean RNE score: 0.136035
+====epoch: 23, learning rate: 0.000089====
+==starting training on the training set==
+mean train loss: 0.711090
+==starting evaluation on the validation set==
+###The inference speed is 9.820ms per frame###
+mean RNE score: 0.128401
+====epoch: 24, learning rate: 0.000080====
+==starting training on the training set==
+mean train loss: 0.706414
+==starting evaluation on the validation set==
+###The inference speed is 9.664ms per frame###
+mean RNE score: 0.135694
+====epoch: 25, learning rate: 0.000072====
+==starting training on the training set==
+mean train loss: 0.712725
+==starting evaluation on the validation set==
+###The inference speed is 10.169ms per frame###
+mean RNE score: 0.143637
+====epoch: 26, learning rate: 0.000065====
+==starting training on the training set==
+mean train loss: 0.706747
+==starting evaluation on the validation set==
+###The inference speed is 9.776ms per frame###
+mean RNE score: 0.134867
+====epoch: 27, learning rate: 0.000058====
+==starting training on the training set==
+mean train loss: 0.688118
+==starting evaluation on the validation set==
+###The inference speed is 9.656ms per frame###
+mean RNE score: 0.136327
+====epoch: 28, learning rate: 0.000052====
+==starting training on the training set==
+mean train loss: 0.680828
+==starting evaluation on the validation set==
+###The inference speed is 9.832ms per frame###
+mean RNE score: 0.135885
+====epoch: 29, learning rate: 0.000047====
+==starting training on the training set==
+mean train loss: 0.686443
+==starting evaluation on the validation set==
+###The inference speed is 9.660ms per frame###
+mean RNE score: 0.132231
+====best RNE score after 30 epochs: 0.123342====
+Max memory alocation: 2616.450048MB
+{'exp_name': 'cmflow_cvpr', 'model': 'cmflow', 'num_points': 256, 'batch_size': 8, 'val_batch_size': 8, 'epochs': 60, 'lr': 0.001, 'decay_epochs': 1, 'decay_rate': 0.9, 'cuda_device': '0', 'no_cuda': False, 'seed': 1234, 'num_workers': 8, 'eval': False, 'eval_split': 'test', 'dataset': 'vodDataset', 'train_set': 'train', 'dataset_path': '/home/zyw/preprocess_res/flow_smp/', 'vis': False, 'save_res': False, 'rigid_thres': 0.15, 'vr_thres': 0.3, 'stat_thres': 0.5, 'mini_clip_len': 5, 'update_len': 5, 'load_checkpoint': False, 'model_path': ''}
+train : 154
+val : 282
+====epoch: 0, learning rate: 0.001000====
+==starting training on the training set==
+mean train loss: 1.730905
+==starting evaluation on the validation set==
+###The inference speed is 9.796ms per frame###
+mean RNE score: 0.118123
+best val score till now: 0.118123
+====epoch: 1, learning rate: 0.000900====
+==starting training on the training set==
+mean train loss: 1.540802
+==starting evaluation on the validation set==
+###The inference speed is 9.638ms per frame###
+mean RNE score: 0.127399
+====epoch: 2, learning rate: 0.000810====
+==starting training on the training set==
+mean train loss: 1.429873
+==starting evaluation on the validation set==
+###The inference speed is 9.912ms per frame###
+mean RNE score: 0.137864
+====epoch: 3, learning rate: 0.000729====
+==starting training on the training set==
+mean train loss: 1.409045
+==starting evaluation on the validation set==
+###The inference speed is 9.740ms per frame###
+mean RNE score: 0.150408
+====epoch: 4, learning rate: 0.000656====
+==starting training on the training set==
+mean train loss: 1.365398
+==starting evaluation on the validation set==
+###The inference speed is 9.699ms per frame###
+mean RNE score: 0.134826
+====epoch: 5, learning rate: 0.000590====
+==starting training on the training set==
+mean train loss: 1.324300
+==starting evaluation on the validation set==
+###The inference speed is 9.790ms per frame###
+mean RNE score: 0.137646
+====epoch: 6, learning rate: 0.000531====
+==starting training on the training set==
+mean train loss: 1.342016
+==starting evaluation on the validation set==
+###The inference speed is 9.855ms per frame###
+mean RNE score: 0.148105
+====epoch: 7, learning rate: 0.000478====
+==starting training on the training set==
+mean train loss: 1.305118
+==starting evaluation on the validation set==
+###The inference speed is 11.083ms per frame###
+mean RNE score: 0.147690
+====epoch: 8, learning rate: 0.000430====
+==starting training on the training set==
+mean train loss: 1.269682
+==starting evaluation on the validation set==
+###The inference speed is 9.816ms per frame###
+mean RNE score: 0.130269
+====epoch: 9, learning rate: 0.000387====
+==starting training on the training set==
+mean train loss: 1.190586
+==starting evaluation on the validation set==
+###The inference speed is 9.750ms per frame###
+mean RNE score: 0.132036
+====epoch: 10, learning rate: 0.000349====
+==starting training on the training set==
+mean train loss: 1.203233
+==starting evaluation on the validation set==
+###The inference speed is 9.636ms per frame###
+mean RNE score: 0.138983
+====epoch: 11, learning rate: 0.000314====
+==starting training on the training set==
+mean train loss: 1.067458
+==starting evaluation on the validation set==
+###The inference speed is 9.784ms per frame###
+mean RNE score: 0.135365
+====epoch: 12, learning rate: 0.000282====
+==starting training on the training set==
+mean train loss: 0.954754
+==starting evaluation on the validation set==
+###The inference speed is 9.643ms per frame###
+mean RNE score: 0.135808
+====epoch: 13, learning rate: 0.000254====
+==starting training on the training set==
+mean train loss: 0.901634
+==starting evaluation on the validation set==
+###The inference speed is 10.452ms per frame###
+mean RNE score: 0.160326
+====epoch: 14, learning rate: 0.000229====
+==starting training on the training set==
+mean train loss: 0.870592
+==starting evaluation on the validation set==
+###The inference speed is 10.203ms per frame###
+mean RNE score: 0.124533
+====epoch: 15, learning rate: 0.000206====
+==starting training on the training set==
+mean train loss: 0.829707
+==starting evaluation on the validation set==
+###The inference speed is 9.723ms per frame###
+mean RNE score: 0.137069
+====epoch: 16, learning rate: 0.000185====
+==starting training on the training set==
+mean train loss: 0.822351
+==starting evaluation on the validation set==
+###The inference speed is 9.928ms per frame###
+mean RNE score: 0.144363
+====epoch: 17, learning rate: 0.000167====
+==starting training on the training set==
+mean train loss: 0.799946
+==starting evaluation on the validation set==
+###The inference speed is 9.708ms per frame###
+mean RNE score: 0.146985
+====epoch: 18, learning rate: 0.000150====
+==starting training on the training set==
+mean train loss: 0.782355
+==starting evaluation on the validation set==
+###The inference speed is 9.918ms per frame###
+mean RNE score: 0.158849
+====epoch: 19, learning rate: 0.000135====
+==starting training on the training set==
+mean train loss: 0.760361
+==starting evaluation on the validation set==
+###The inference speed is 10.722ms per frame###
+mean RNE score: 0.140038
+====epoch: 20, learning rate: 0.000122====
+==starting training on the training set==
+mean train loss: 0.770888
+==starting evaluation on the validation set==
+###The inference speed is 9.832ms per frame###
+mean RNE score: 0.141338
+====epoch: 21, learning rate: 0.000109====
+==starting training on the training set==
+mean train loss: 0.755591
+==starting evaluation on the validation set==
+###The inference speed is 10.737ms per frame###
+mean RNE score: 0.139693
+====epoch: 22, learning rate: 0.000098====
+==starting training on the training set==
+mean train loss: 0.746227
+==starting evaluation on the validation set==
+###The inference speed is 9.933ms per frame###
+mean RNE score: 0.141580
+====epoch: 23, learning rate: 0.000089====
+==starting training on the training set==
+mean train loss: 0.722974
+==starting evaluation on the validation set==
+###The inference speed is 10.110ms per frame###
+mean RNE score: 0.157827
+====epoch: 24, learning rate: 0.000080====
+==starting training on the training set==
+mean train loss: 0.722398
+==starting evaluation on the validation set==
+###The inference speed is 9.762ms per frame###
+mean RNE score: 0.145866
+====epoch: 25, learning rate: 0.000072====
+==starting training on the training set==
+mean train loss: 0.721288
+==starting evaluation on the validation set==
+###The inference speed is 9.918ms per frame###
+mean RNE score: 0.150002
+====epoch: 26, learning rate: 0.000065====
+==starting training on the training set==
+mean train loss: 0.714312
+==starting evaluation on the validation set==
+###The inference speed is 9.903ms per frame###
+mean RNE score: 0.145587
+====epoch: 27, learning rate: 0.000058====
+==starting training on the training set==
+mean train loss: 0.699350
+==starting evaluation on the validation set==
+###The inference speed is 9.929ms per frame###
+mean RNE score: 0.143281
+====epoch: 28, learning rate: 0.000052====
+==starting training on the training set==
+mean train loss: 0.702015
+==starting evaluation on the validation set==
+###The inference speed is 10.010ms per frame###
+mean RNE score: 0.154077
+====epoch: 29, learning rate: 0.000047====
+==starting training on the training set==
+mean train loss: 0.701930
+==starting evaluation on the validation set==
+###The inference speed is 9.909ms per frame###
+mean RNE score: 0.148143
+====epoch: 30, learning rate: 0.000042====
+==starting training on the training set==
+mean train loss: 0.693841
+==starting evaluation on the validation set==
+###The inference speed is 9.826ms per frame###
+mean RNE score: 0.159861
+====epoch: 31, learning rate: 0.000038====
+==starting training on the training set==
+mean train loss: 0.693621
+==starting evaluation on the validation set==
+###The inference speed is 10.205ms per frame###
+mean RNE score: 0.146561
+====epoch: 32, learning rate: 0.000034====
+==starting training on the training set==
+mean train loss: 0.669581
+==starting evaluation on the validation set==
+###The inference speed is 9.946ms per frame###
+mean RNE score: 0.154417
+====epoch: 33, learning rate: 0.000031====
+==starting training on the training set==
+mean train loss: 0.676274
+==starting evaluation on the validation set==
+###The inference speed is 9.854ms per frame###
+mean RNE score: 0.147945
+====epoch: 34, learning rate: 0.000028====
+==starting training on the training set==
+mean train loss: 0.680198
+==starting evaluation on the validation set==
+###The inference speed is 9.991ms per frame###
+mean RNE score: 0.151936
+====epoch: 35, learning rate: 0.000025====
+==starting training on the training set==
+mean train loss: 0.665953
+==starting evaluation on the validation set==
+###The inference speed is 12.524ms per frame###
+mean RNE score: 0.152062
+====epoch: 36, learning rate: 0.000023====
+==starting training on the training set==
+mean train loss: 0.664337
+==starting evaluation on the validation set==
+###The inference speed is 10.285ms per frame###
+mean RNE score: 0.152458
+====epoch: 37, learning rate: 0.000020====
+==starting training on the training set==
+mean train loss: 0.678493
+==starting evaluation on the validation set==
+###The inference speed is 9.646ms per frame###
+mean RNE score: 0.149649
+====epoch: 38, learning rate: 0.000018====
+==starting training on the training set==
+mean train loss: 0.667301
+==starting evaluation on the validation set==
+###The inference speed is 10.141ms per frame###
+mean RNE score: 0.153030
+====epoch: 39, learning rate: 0.000016====
+==starting training on the training set==
+mean train loss: 0.669578
+==starting evaluation on the validation set==
+###The inference speed is 10.046ms per frame###
+mean RNE score: 0.153609
+====epoch: 40, learning rate: 0.000015====
+==starting training on the training set==
+mean train loss: 0.667428
+==starting evaluation on the validation set==
+###The inference speed is 9.811ms per frame###
+mean RNE score: 0.153538
+====epoch: 41, learning rate: 0.000013====
+==starting training on the training set==
+mean train loss: 0.656931
+==starting evaluation on the validation set==
+###The inference speed is 9.658ms per frame###
+mean RNE score: 0.152375
+====epoch: 42, learning rate: 0.000012====
+==starting training on the training set==
+mean train loss: 0.662233
+==starting evaluation on the validation set==
+###The inference speed is 10.098ms per frame###
+mean RNE score: 0.152615
+====epoch: 43, learning rate: 0.000011====
+==starting training on the training set==
+mean train loss: 0.664230
+==starting evaluation on the validation set==
+###The inference speed is 9.952ms per frame###
+mean RNE score: 0.152242
+====epoch: 44, learning rate: 0.000010====
+==starting training on the training set==
+mean train loss: 0.665588
+==starting evaluation on the validation set==
+###The inference speed is 9.794ms per frame###
+mean RNE score: 0.152111
+====epoch: 45, learning rate: 0.000009====
+==starting training on the training set==
+mean train loss: 0.668906
+==starting evaluation on the validation set==
+###The inference speed is 9.939ms per frame###
+mean RNE score: 0.153755
+====epoch: 46, learning rate: 0.000008====
+==starting training on the training set==
+mean train loss: 0.664120
+==starting evaluation on the validation set==
+###The inference speed is 9.771ms per frame###
+mean RNE score: 0.154039
+====epoch: 47, learning rate: 0.000007====
+==starting training on the training set==
+mean train loss: 0.656737
+==starting evaluation on the validation set==
+###The inference speed is 9.741ms per frame###
+mean RNE score: 0.153533
+====epoch: 48, learning rate: 0.000006====
+==starting training on the training set==
+mean train loss: 0.649205
+==starting evaluation on the validation set==
+###The inference speed is 9.594ms per frame###
+mean RNE score: 0.152255
+====epoch: 49, learning rate: 0.000006====
+==starting training on the training set==
+mean train loss: 0.660405
+==starting evaluation on the validation set==
+###The inference speed is 10.379ms per frame###
+mean RNE score: 0.152823
+====epoch: 50, learning rate: 0.000005====
+==starting training on the training set==
+mean train loss: 0.656266
+==starting evaluation on the validation set==
+###The inference speed is 9.697ms per frame###
+mean RNE score: 0.154078
+====epoch: 51, learning rate: 0.000005====
+==starting training on the training set==
+mean train loss: 0.652144
+==starting evaluation on the validation set==
+###The inference speed is 9.863ms per frame###
+mean RNE score: 0.154567
+====epoch: 52, learning rate: 0.000004====
+==starting training on the training set==
+mean train loss: 0.652479
+==starting evaluation on the validation set==
+###The inference speed is 9.768ms per frame###
+mean RNE score: 0.154208
+====epoch: 53, learning rate: 0.000004====
+==starting training on the training set==
+mean train loss: 0.661001
+==starting evaluation on the validation set==
+###The inference speed is 9.872ms per frame###
+mean RNE score: 0.152839
+====epoch: 54, learning rate: 0.000003====
+==starting training on the training set==
+mean train loss: 0.659052
+==starting evaluation on the validation set==
+###The inference speed is 9.863ms per frame###
+mean RNE score: 0.154559
+====epoch: 55, learning rate: 0.000003====
+==starting training on the training set==
+mean train loss: 0.652301
+==starting evaluation on the validation set==
+###The inference speed is 9.757ms per frame###
+mean RNE score: 0.153773
+====epoch: 56, learning rate: 0.000003====
+==starting training on the training set==
+mean train loss: 0.658617
+==starting evaluation on the validation set==
+###The inference speed is 9.822ms per frame###
+mean RNE score: 0.152631
+====epoch: 57, learning rate: 0.000002====
+==starting training on the training set==
+mean train loss: 0.650006
+==starting evaluation on the validation set==
+###The inference speed is 10.543ms per frame###
+mean RNE score: 0.153476
+====epoch: 58, learning rate: 0.000002====
+==starting training on the training set==
+mean train loss: 0.656505
+==starting evaluation on the validation set==
+###The inference speed is 9.953ms per frame###
+mean RNE score: 0.153533
+====epoch: 59, learning rate: 0.000002====
+==starting training on the training set==
+mean train loss: 0.661912
+==starting evaluation on the validation set==
+###The inference speed is 10.124ms per frame###
+mean RNE score: 0.153866
+====best RNE score after 60 epochs: 0.118123====
+Max memory alocation: 2616.450048MB
