@@ -1,0 +1,10 @@
+# ninja log v5
+0	6076	1681291720004918778	/home/zyw/桌面/CMFlow/lib/build/temp.linux-x86_64-cpython-38/src/sampling.o	daccd9b5623b6955
+1	6131	1681291720060920345	/home/zyw/桌面/CMFlow/lib/build/temp.linux-x86_64-cpython-38/src/group_points.o	ebe5231a31b51186
+1	6377	1681291720304927172	/home/zyw/桌面/CMFlow/lib/build/temp.linux-x86_64-cpython-38/src/interpolate.o	28276ffd8e54dd38
+0	7024	1681291720952945302	/home/zyw/桌面/CMFlow/lib/build/temp.linux-x86_64-cpython-38/src/ball_query.o	8dba41d106a0ac57
+1	11160	1681291725089060376	/home/zyw/桌面/CMFlow/lib/build/temp.linux-x86_64-cpython-38/src/group_points_gpu.o	6715d7f5c56e4b0a
+1	11274	1681291725201063475	/home/zyw/桌面/CMFlow/lib/build/temp.linux-x86_64-cpython-38/src/interpolate_gpu.o	553f52f6a448c9db
+1	11937	1681291725865081847	/home/zyw/桌面/CMFlow/lib/build/temp.linux-x86_64-cpython-38/src/ball_query_gpu.o	6e54dfde104e4513
+1	12174	1681291726101088371	/home/zyw/桌面/CMFlow/lib/build/temp.linux-x86_64-cpython-38/src/sampling_gpu.o	f0f846312f48abaa
+1	17185	1681291731109225978	/home/zyw/桌面/CMFlow/lib/build/temp.linux-x86_64-cpython-38/src/pointnet2_api.o	d52b791dc74b508d
