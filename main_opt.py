@@ -17,7 +17,6 @@ from preprocess.utils.RAFT.core.utils.flow_viz import flow_to_image
 from preprocess.utils.optical_flow import *
 
 
-
 folder_path = '/home/zyw/odobeyondvision/2019-10-24-17-51-58/mmwave_middle_pcl/'
 folder_path1 = '/home/zyw/odobeyondvision/2019-10-24-17-51-58/rgb/'
 folder_path2 = '/home/zyw/preprocess_res/flow_smp/train/delft_2/'

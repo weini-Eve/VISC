@@ -14,6 +14,7 @@ from utils.get_flow_samples import get_radar_flow_samples
 
 TASK = 'scene_flow'
 
+
 def main(args):
     
     root_dir = args.root_dir
@@ -33,7 +34,7 @@ def main(args):
 
     clip_path = 'clips'
 
-    with open(  TASK + '_split_info.yaml','r') as f:
+    with open(TASK + '_split_info.yaml', 'r') as f:
         splits = yaml.safe_load(f.read())
 
     for split in splits:
@@ -42,15 +43,16 @@ def main(args):
         if frames is not None:
             # aggregate cross-modal info and consecutive radar pcs for training, validation and testing
             if split == 'train':
-                get_radar_flow_samples(data_loc,frames,smp_path,opt_path, clip, split, pseudo_label_path, mode='train')
+                get_radar_flow_samples(data_loc, frames, smp_path, opt_path, clip, split, pseudo_label_path, mode='train')
             if split == 'val':
-                get_radar_flow_samples(data_loc,frames,smp_path,opt_path, clip, split, true_label_path, mode='val')
+                get_radar_flow_samples(data_loc, frames, smp_path, opt_path, clip, split, true_label_path, mode='val')
             if split == 'test':
-                get_radar_flow_samples(data_loc,frames,smp_path,opt_path, clip, split, true_label_path, mode='test')
-                
+                get_radar_flow_samples(data_loc, frames, smp_path, opt_path, clip, split, true_label_path, mode='test')
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='preprocess')
-    parser.add_argument('--root_dir', type=str, default="/home/zyw/view_of_delft/", help='Path for the origial dataset.')
+    parser.add_argument('--root_dir', type=str, default="/home/zyw/view_of_delft/", help='Path for the original dataset.')
     parser.add_argument('--save_dir', type=str, default='/home/zyw/odo/', help='Path for saving preprocessing results.')
     args = parser.parse_args()
     main(args)
