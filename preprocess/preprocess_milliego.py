@@ -28,7 +28,7 @@ def main(args):
     sub_dirs = os.listdir(root_dir)
     for sub_dir in sub_dirs:
         data_loc = MilliegoLocations(root_dir=root_dir, sub_dir=sub_dir)
-        get_radar_flow_from_milliego(data_loc, smp_path, opt_path, mode ='train')
+        get_radar_flow_from_milliego(data_loc, smp_path, opt_path, 'train')
 
     # for split in splits:
     #     for clip in splits[split]:

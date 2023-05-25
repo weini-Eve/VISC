@@ -39,7 +39,7 @@ def get_radar_flow_samples(data_loc,frames,smp_path,opt_path,clip,split, label_p
         get_one_sample(frames[i], frames[i+1], data_loc, save_path, opt_path, label_path, mode, clip)
 
 
-def get_radar_flow_from_milliego(data_loc, smp_path, opt_path):
+def get_radar_flow_from_milliego(data_loc, smp_path, opt_path, mode):
     save_path = smp_path
     if not os.path.exists(save_path):
         os.makedirs(save_path)
@@ -49,7 +49,7 @@ def get_radar_flow_from_milliego(data_loc, smp_path, opt_path):
     num_frames = len(frames)
 
     for i in tqdm(range(num_frames-1),desc="generate scene flow samples from milliego"):
-        get_one_sample_from_milliego(frames[i], frames[i+1], data_loc, save_path, opt_path)
+        get_one_sample_from_milliego(frames[i], frames[i+1], data_loc, save_path, opt_path, mode)
 
 
 def get_one_sample(frame1, frame2, data_loc, save_path, opt_path, label_path, mode, clip):
@@ -184,7 +184,7 @@ def get_one_sample(frame1, frame2, data_loc, save_path, opt_path, label_path, mo
         ujson.dump(sample, open(out_path, "w"))
 
 
-def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
+def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path, mode):
     raft_model = init_raft()
 
     data1 = FrameDataLoader(kitti_locations=data_loc,
