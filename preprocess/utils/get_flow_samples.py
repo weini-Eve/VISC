@@ -187,9 +187,9 @@ def get_one_sample(frame1, frame2, data_loc, save_path, opt_path, label_path, mo
 def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path, mode):
     raft_model = init_raft()
 
-    data1 = FrameDataLoader(kitti_locations=data_loc,
+    data1 = FrameDataLoader(milliego_locations=data_loc,
                             frame_number=frame1)
-    data2 = FrameDataLoader(kitti_locations=data_loc,
+    data2 = FrameDataLoader(milliego_locations=data_loc,
                             frame_number=frame2)
 
     # transform info
