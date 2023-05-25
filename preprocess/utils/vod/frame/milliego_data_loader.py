@@ -7,7 +7,7 @@ import logging
 from vod.configuration import MilliegoLocations
 
 
-class FrameDataLoader:
+class MilliegoFrameDataLoader:
     """
     This class is responsible for loading any possible data from the dataset for a single specific frame.
     """

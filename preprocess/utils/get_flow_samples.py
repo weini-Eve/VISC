@@ -11,6 +11,7 @@ from .common import get_frame_list
 from scipy.spatial.transform import Rotation as R
 from .vod.configuration import KittiLocations
 from .vod.frame import FrameDataLoader
+from .vod.frame import MilliegoFrameDataLoader
 from .vod.frame import FrameTransformMatrix
 from .vod.frame import homogeneous_transformation, project_3d_to_2d
 from .vod.frame import FrameLabels
@@ -187,9 +188,9 @@ def get_one_sample(frame1, frame2, data_loc, save_path, opt_path, label_path, mo
 def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path, mode):
     raft_model = init_raft()
 
-    data1 = FrameDataLoader(milliego_locations=data_loc,
+    data1 = MilliegoFrameDataLoader(milliego_locations=data_loc,
                             frame_number=frame1)
-    data2 = FrameDataLoader(milliego_locations=data_loc,
+    data2 = MilliegoFrameDataLoader(milliego_locations=data_loc,
                             frame_number=frame2)
 
     # transform info
