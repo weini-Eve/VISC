@@ -200,6 +200,10 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
     transform_matrix[3] = [0, 0, 0, 1]
 
     # x y z RCS v_r
+    zeros = np.zeros((data1.radar_data.shape[0], 1))  # 创建一个全为0的列向量
+    data1.radar_data = np.hstack((data1.radar_data[:, :3], zeros, data1.radar_data[:, 3:].reshape(-1, 1)))
+    zeros = np.zeros((data2.radar_data.shape[0], 1))  # 创建一个全为0的列向量
+    data2.radar_data = np.hstack((data2.radar_data[:, :3], zeros, data2.radar_data[:, 3:].reshape(-1, 1)))
     radar_data1 = data1.radar_data[:, 0:5]
     radar_data2 = data2.radar_data[:, 0:5]
     # indices1 = filt_points_in_fov(radar_data1, transforms1, 'radar')
@@ -218,13 +222,13 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
     if not (radar_data1.shape[0] < min_pnts or radar_data2.shape[0] < min_pnts):
 
         # coordinate frame transformation from radar1 to radar2
-        odom_cam_1 = transforms1.t_odom_camera
-        odom_cam_2 = transforms2.t_odom_camera
-        cam_radar_1 = transforms1.t_camera_radar
-        cam_radar_2 = transforms2.t_camera_radar
-        odom_radar_1 = np.dot(odom_cam_1, cam_radar_1)
-        odom_radar_2 = np.dot(odom_cam_2, cam_radar_2)
-        radar1_radar2 = np.dot(np.linalg.inv(odom_radar_1), odom_radar_2)
+        # odom_cam_1 = transforms1.t_odom_camera
+        # odom_cam_2 = transforms2.t_odom_camera
+        # cam_radar_1 = transforms1.t_camera_radar
+        # cam_radar_2 = transforms2.t_camera_radar
+        # odom_radar_1 = np.dot(odom_cam_1, cam_radar_1)
+        # odom_radar_2 = np.dot(odom_cam_2, cam_radar_2)
+        # radar1_radar2 = np.dot(np.linalg.inv(odom_radar_1), odom_radar_2)
 
         # estimate and show optical flow from images
         if mode == 'train':
@@ -232,7 +236,19 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
             img2 = cv2.cvtColor(data2.image, cv2.COLOR_RGB2BGR)
             opt_flow = estimate_optical_flow(img1, img2, raft_model)
             show_optical_flow(img1, img2, opt_flow, opt_path, frame1)
-            opt_info = info_from_opt_flow(radar_data1, transforms1, opt_flow)
+            radar_p = np.concatenate((radar_data1[:, 0:3], np.ones((radar_data1.shape[0], 1))), axis=1)
+            RGB_to_mmWave_extrinsic = [1.0, 0.0, 0.0, 0.032, 0.0, 1.0, 0.0, 0.044, 0.0, 0.0, 1.0, -0.106, 0.0, 0.0, 0.0, 1.0]
+            transforms1_matrix = np.array(RGB_to_mmWave_extrinsic).reshape((4, 4))
+            radar_data_t = homogeneous_transformation(radar_p, transforms1_matrix)
+            camera_intrinsic = [566.8943529201453, 0.0, 322.10094802162763, 0.0, 0.0, 567.7699123433893, 242.8149724252196, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+            camera_projection_matrix = np.array(camera_intrinsic).reshape((4, 4))
+            uvs = project_3d_to_2d(radar_data_t, camera_projection_matrix)
+            # opt_info = info_from_opt_flow(radar_data1, transforms1, opt_flow)
+            radar_opt = opt_flow[uvs[:, 1] - 1, uvs[:, 0] - 1]
+            opt_info = opt_info = {"radar_u": uvs[:, 0],
+                                   "radar_v": uvs[:, 1],
+                                   "opt_flow": radar_opt,
+                                   }
         else:
             opt_info = opt_info = {"radar_u": np.array([]),
                                    "radar_v": np.array([]),
@@ -240,10 +256,10 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
                                    }
         ## get LiDAR MOT results for training or real MOT labels for validation/test/train_anno
         # get foreground info (index, confidence, flow labels)
-        labels1 = load_track_labels(label_path, frame1, mode)
-        labels2 = load_track_labels(label_path, frame2, mode)
-        fg_idx, fg_confs, fg_labels, fg_bboxes = extract_fg_labels(labels1, labels2, radar_data1, transforms1,
-                                                                   transforms2, 'radar')
+        # labels1 = load_track_labels(label_path, frame1, mode)
+        # labels2 = load_track_labels(label_path, frame2, mode)
+        # fg_idx, fg_confs, fg_labels, fg_bboxes = extract_fg_labels(labels1, labels2, radar_data1, transforms1,
+        #                                                            transforms2, 'radar')
 
         gt_mask = np.zeros(radar_data1.shape[0], dtype=np.float32)
         gt_labels = np.zeros((radar_data1.shape[0], 3), dtype=np.float32)
@@ -254,44 +270,54 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
         ## we obtain the scene flow and mask GT with the ego-motion info and foreground info
         if mode == 'test' or mode == 'val':
 
+            gt_mask = np.ones(radar_data1.shape[0], dtype=np.float32)
+            gt_labels = np.zeros((radar_data1.shape[0], 3), dtype=np.float32)
+            pse_mask = np.zeros(radar_data1.shape[0], dtype=np.float32)
+            pse_labels = np.zeros((radar_data1.shape[0], 3), dtype=np.float32)
+
             # get rigid flow components induced by ego-motion
-            flow_r = get_rigid_flow(radar_data1, radar1_radar2)
-            # get non-rigid components for inbox points
-            flow_nr = fg_labels[fg_idx] - flow_r[fg_idx]
-            # obtain the index for moving points from foreground
-            mov_idx = np.array(fg_idx)[np.linalg.norm(flow_nr, axis=1) > 0.05]
-
-            if len(mov_idx) > 0:
-                stat_idx = np.delete(np.arange(0, radar_data1.shape[0]), mov_idx)
-            else:
-                stat_idx = np.arange(0, radar_data1.shape[0])
-
-            gt_mask[stat_idx] = 1
-            gt_labels[stat_idx] = flow_r[stat_idx]
-            if len(mov_idx) > 0:
-                gt_labels[mov_idx] = fg_labels[mov_idx]
-                gt_mask[mov_idx] = 1 - fg_confs[mov_idx]
+            # flow_r = get_rigid_flow(radar_data1, radar1_radar2)
+            flow_r = get_rigid_flow(radar_data1, transform_matrix)
+            # # get non-rigid components for inbox points
+            # flow_nr = fg_labels[fg_idx] - flow_r[fg_idx]
+            # # obtain the index for moving points from foreground
+            # mov_idx = np.array(fg_idx)[np.linalg.norm(flow_nr, axis=1) > 0.05]
+            #
+            # if len(mov_idx) > 0:
+            #     stat_idx = np.delete(np.arange(0, radar_data1.shape[0]), mov_idx)
+            # else:
+            #     stat_idx = np.arange(0, radar_data1.shape[0])
+            gt_labels = flow_r
+            # gt_mask[stat_idx] = 1
+            # gt_labels[stat_idx] = flow_r[stat_idx]
+            # if len(mov_idx) > 0:
+            #     gt_labels[mov_idx] = fg_labels[mov_idx]
+            #     gt_mask[mov_idx] = 1 - fg_confs[mov_idx]
 
         ## for train set, to provide cross-modal supervision during training
         ## we obtain the pseudo scene flow and mask from foreground info obtained from LiDAR
         else:
-            if len(fg_idx) > 0:
-                bg_idx = np.delete(np.arange(0, radar_data1.shape[0]), fg_idx)
-            else:
-                bg_idx = np.arange(0, radar_data1.shape[0])
-
-            pse_mask[bg_idx] = 1
-            if len(fg_idx) > 0:
-                pse_labels[fg_idx] = fg_labels[fg_idx]
-                pse_mask[fg_idx] = 1 - fg_confs[fg_idx]
+            # if len(fg_idx) > 0:
+            #     bg_idx = np.delete(np.arange(0, radar_data1.shape[0]), fg_idx)
+            # else:
+            #     bg_idx = np.arange(0, radar_data1.shape[0])
+            #
+            # pse_mask[bg_idx] = 1
+            # if len(fg_idx) > 0:
+            #     pse_labels[fg_idx] = fg_labels[fg_idx]
+            #     pse_mask[fg_idx] = 1 - fg_confs[fg_idx]
+            gt_mask = np.zeros(radar_data1.shape[0], dtype=np.float32)
+            gt_labels = np.zeros((radar_data1.shape[0], 3), dtype=np.float32)
+            pse_mask = np.ones(radar_data1.shape[0], dtype=np.float32)
+            pse_labels = np.zeros((radar_data1.shape[0], 3), dtype=np.float32)
 
         # convert numpy array to list for json serializable
         for key in opt_info:
             opt_info[key] = opt_info[key].tolist()
         radar_data1 = radar_data1.tolist()
         radar_data2 = radar_data2.tolist()
-        radar1_radar2 = radar1_radar2.tolist()
-
+        # radar1_radar2 = radar1_radar2.tolist()
+        transform_matrix = transform_matrix.tolist()
         gt_mask = gt_mask.tolist()
         gt_labels = gt_labels.tolist()
         pse_mask = pse_mask.tolist()
@@ -301,7 +327,7 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
         sample = {
             "pc1": radar_data1,
             "pc2": radar_data2,
-            "trans": radar1_radar2,
+            "trans": transform_matrix,
             "opt_info": opt_info,
             "gt_mask": gt_mask,
             "gt_labels": gt_labels,
