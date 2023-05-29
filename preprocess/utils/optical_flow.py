@@ -11,7 +11,7 @@ from preprocess.utils.vod.visualization.settings import *
 from preprocess.utils.global_param import *
 from preprocess.utils.RAFT.core.raft import RAFT
 from preprocess.utils.RAFT.core.utils.flow_viz import flow_to_image
-
+from scipy.optimize import minimize
 
 def estimate_optical_flow(img1,img2,model):
 
@@ -87,3 +87,109 @@ def filt_points_in_fov(pc_data, transforms, sensor):
     indices = np.argwhere(filt_uv).flatten()
 
     return indices
+
+
+def cam_trans(img1, img2):
+    # 创建SIFT对象
+    sift = cv2.SIFT_create()
+
+    # 分别提取各自的SIFT特征
+    kp1, des1 = sift.detectAndCompute(img1, None)
+    kp2, des2 = sift.detectAndCompute(img2, None)
+
+    # 创建FLANN匹配器
+    matcher = cv2.FlannBasedMatcher()
+
+    # 特征匹配
+    matches = matcher.match(des1, des2)
+
+    # 取前10个最佳匹配点对
+    matches = sorted(matches, key=lambda x: x.distance)[:100]
+
+    pts1 = np.float32([kp1[m.queryIdx].pt for m in matches]).reshape(-1, 1, 2)
+    pts2 = np.float32([kp2[m.trainIdx].pt for m in matches]).reshape(-1, 1, 2)
+
+    # 估计相机的本质矩阵和外部参数
+    E_metric, mask = cv2.findEssentialMat(np.float32([kp1[m.queryIdx].pt for m in matches]),
+                               np.float32([kp2[m.trainIdx].pt for m in matches]),
+                               focal=1.0, pp=(0, 0))
+
+    # 估计相机的外部参数
+    K = [566.8943529201453, 0.0, 322.10094802162763, 0.0, 567.7699123433893, 242.8149724252196, 0.0, 0.0, 1.0]
+    K = np.array(K).reshape((3, 3))
+    _, Rot_cam, trans_cam, mask = cv2.recoverPose(E_metric, np.float32([kp1[m.queryIdx].pt for m in matches]),
+                                np.float32([kp2[m.trainIdx].pt for m in matches]),
+                                cameraMatrix=K, mask=mask)
+
+    projMat1 = np.hstack((np.eye(3), np.zeros((3, 1))))
+    projMat2 = np.hstack((Rot_cam, trans_cam))
+
+    # 三角化得到3D点坐标
+    points_4d = cv2.triangulatePoints(projMat1, projMat2, pts1, pts2)
+
+    # 将4D坐标转化为3D坐标
+    points_3d = cv2.convertPointsFromHomogeneous(points_4d.T)
+
+    # 使用PnP算法求解相机的运动
+    retval, rvec, tvec = cv2.solvePnP(points_3d, pts2, K, None)
+
+    # 将旋转向量转化为旋转矩阵
+    Rot, _ = cv2.Rodrigues(rvec)
+
+    # 使用cv2.projectPoints函数将3D点投影到图像平面上，得到2D点的预测值
+    pts2_pred, _ = cv2.projectPoints(points_3d, rvec, tvec, K, None)
+
+    # 计算预测值和实际值之间的差距，即重投影误差
+    reproj_error = np.sqrt(np.mean((pts2_pred - pts2) ** 2))
+
+    def optimize_func(x):
+        R_new = cv2.Rodrigues(x[:3])[0]
+        t_new = x[3:].reshape((3, 1))
+        pts2_pred, _ = cv2.projectPoints(points_3d, R_new, t_new, K, None)
+        return np.sqrt(np.mean((pts2_pred - pts2) ** 2))
+
+    x0 = np.concatenate((rvec, tvec)).ravel()
+    res = minimize(optimize_func, x0)
+    R_opt, t_opt = cv2.Rodrigues(res.x[:3])[0], res.x[3:].reshape((3, 1))
+    return R_opt, t_opt
+def IMU_trans(IMU_data):
+    # 获取第15-17列和第20-22列的数据
+    data = IMU_data.iloc[:, [0, 14, 15, 16, 19, 20, 21]]
+    imu_data = np.array(data)
+    # 打印数据
+    # print(data)
+
+    # with open('/home/zyw/odobeyondvision/2019-10-24-17-51-58/_slash_imu_slash_data.csv') as csv_file:
+    #     csv_reader = csv.reader(csv_file)
+    #     for row in csv_reader:
+    #         print(', '.join(row))
+
+    # 加载IMU数据
+
+    # 定义变量
+    dt = 0  # 采样时间
+    g = np.array([0, 0, -9.8])  # 重力加速度
+    Rot_imu = np.eye(3)  # 初始旋转矩阵
+    tans_imu = np.zeros(3)  # 初始位置
+    v = np.zeros(3)  # 初始速度
+    bias_gyro = [0.0004, 0.0, 0.0]
+    bias_gyro_matrix = np.diag(bias_gyro)  # 陀螺仪偏差
+    bias_acc = [0.0004, 0.0, 0.0]
+    bias_acc_matrix = np.diag(bias_acc)  # 加速度计偏差
+
+    # 预积分
+    for i in range(1, imu_data.shape[0]):
+        # 计算时间间隔
+        dt_i = imu_data[i, 0] - imu_data[i - 1, 0]
+        dt_i = dt_i * 10 ** -8
+        # 计算旋转增量
+        omega = (imu_data[i, 4:7] - bias_gyro_matrix.dot(imu_data[i, 1:4])) * dt_i
+        Rot_imu = Rot_imu.dot(np.array([[1, -omega[2], omega[1]],
+                                        [omega[2], 1, -omega[0]],
+                                        [-omega[1], omega[0], 1]]))
+
+        # 计算加速度增量
+        a = (imu_data[i, 1:4] - bias_acc_matrix.dot(imu_data[i, 1:4]))
+        a = Rot_imu.dot(a) - g
+        v += a * dt_i
+        tans_imu += v * dt_i + 0.5 * a * dt_i ** 2
