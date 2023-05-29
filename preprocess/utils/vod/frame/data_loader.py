@@ -3,8 +3,10 @@ import numpy as np
 from typing import Optional, List
 from matplotlib import pyplot as plt
 import logging
+import scipy.io
 
 from vod.configuration import KittiLocations
+
 
 
 class FrameDataLoader:
@@ -23,10 +25,12 @@ upon request
 
         # Assigning parameters
         self.kitti_locations: KittiLocations = kitti_locations
+        self.kitti_locations: KittiLocations = kitti_locations
         self.frame_number: str = frame_number
 
         # Getting filed id from frame number
         self.file_id: str = str(self.frame_number).zfill(5)
+        self.frame_number = self.file_id[:5]
 
         # Creating properties for possible data.
         # Data is only loaded upon request, then stored for future use.
@@ -143,10 +147,10 @@ does not exist, it returns None.
         """
         try:
             img = plt.imread(
-                os.path.join(self.kitti_locations.camera_dir, f'{self.frame_number}.jpg'))
+                os.path.join(self.kitti_locations.camera_dir, f'{self.frame_number}.png'))
 
         except FileNotFoundError:
-            logging.error(f"{self.frame_number}.jpg does not exist at location: {self.kitti_locations.camera_dir}!")
+            logging.error(f"{self.frame_number}.png does not exist at location: {self.kitti_locations.camera_dir}!")
             return None
 
         return img
@@ -160,14 +164,20 @@ does not exist, it returns None.
         """
 
         try:
-            radar_file = os.path.join(self.kitti_locations.radar_dir, f'{self.file_id}.bin')
-            scan = np.fromfile(radar_file, dtype=np.float32).reshape(-1, 7)
+            radar_dir = self.kitti_locations.radar_dir
+            file_ids = sorted([f[:-4] for f in os.listdir(radar_dir) if f.endswith('.mat')])
+            for file_id in file_ids:
+                radar_file = os.path.join(radar_dir, f'{file_id}.mat')
+            radar_file = os.path.join(self.kitti_locations.radar_dir, f'{self.file_id}.mat')
+            data1 = scipy.io.loadmat(radar_file)
+            frame = data1['frame']
+            scan = np.fromfile(radar_file, dtype=np.float32).reshape(-1, 4)
 
         except FileNotFoundError:
-            logging.error(f"{self.file_id}.bin does not exist at location: {self.kitti_locations.radar_dir}!")
+            logging.error(f"{self.file_id}.mat does not exist at location: {self.kitti_locations.radar_dir}!")
             return None
 
-        return scan
+        return frame
 
     def get_lidar_scan(self) -> Optional[np.ndarray]:
         """
@@ -226,4 +236,10 @@ does not exist, it returns None.
             return None
 
         return labels
+
+    @radar_data.setter
+    def radar_data(self, value):
+        self._radar_data = value
+
+
 
