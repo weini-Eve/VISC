@@ -164,14 +164,9 @@ does not exist, it returns None.
         """
 
         try:
-            radar_dir = self.kitti_locations.radar_dir
-            file_ids = sorted([f[:-4] for f in os.listdir(radar_dir) if f.endswith('.mat')])
-            for file_id in file_ids:
-                radar_file = os.path.join(radar_dir, f'{file_id}.mat')
             radar_file = os.path.join(self.kitti_locations.radar_dir, f'{self.file_id}.mat')
             data1 = scipy.io.loadmat(radar_file)
             frame = data1['frame']
-            scan = np.fromfile(radar_file, dtype=np.float32).reshape(-1, 4)
 
         except FileNotFoundError:
             logging.error(f"{self.file_id}.mat does not exist at location: {self.kitti_locations.radar_dir}!")
