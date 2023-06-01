@@ -1,4 +1,7 @@
+import csv
 import os
+
+import cv2
 import numpy as np
 from typing import Optional, List
 from matplotlib import pyplot as plt
@@ -36,6 +39,7 @@ upon request
         # Data is only loaded upon request, then stored for future use.
         self._image: Optional[np.ndarray] = None
         self._lidar_data: Optional[np.ndarray] = None
+        self._imu: Optional[np.ndarray] = None
         self._radar_data: Optional[np.ndarray] = None
         self._raw_labels: Optional[np.ndarray] = None
         self._prediction: Optional[np.ndarray] = None
@@ -54,6 +58,20 @@ Image information property in RGB format.
             # Load data if it is not loaded yet.
             self._image = self.get_image()
             return self._image
+
+    @property
+    def imu(self):
+        """
+Image information property in RGB format.
+        :return: RGB image.
+        """
+        if self._imu is not None:
+            # When the data is already loaded.
+            return self._imu
+        else:
+            # Load data if it is not loaded yet.
+            self._imu = self.get_imu()
+            return self._imu
 
     @property
     def lidar_data(self):
@@ -146,7 +164,7 @@ does not exist, it returns None.
         :return: Numpy array with image data.
         """
         try:
-            img = plt.imread(
+            img = cv2.imread(
                 os.path.join(self.kitti_locations.camera_dir, f'{self.frame_number}.png'))
 
         except FileNotFoundError:
@@ -154,6 +172,30 @@ does not exist, it returns None.
             return None
 
         return img
+
+    def get_imu(self) -> Optional[np.ndarray]:
+        """
+This method obtains the image information from the location specified by the KittiLocations object. If the file
+does not exist, it returns None.
+
+        :return: Numpy array with image data.
+        """
+        try:
+            imu_file = os.path.join(self.kitti_locations.imu_dir, f'{self.file_id}.csv')
+            with open(imu_file, 'r') as file:
+                reader1 = csv.reader(file)
+                data1 = [row[0] for row in reader1]
+                cleaned_list1 = [eval(s) for s in data1]
+                extracted_data1 = [[lst[0], lst[14], lst[15], lst[16], lst[19], lst[20], lst[21]] for lst in cleaned_list1]
+                for row in extracted_data1:
+                    matrix1 = np.array(extracted_data1)
+                    float_matrix1 = [[float(elem) for elem in row] for row in matrix1]
+                    float_matrix1 = np.array(float_matrix1)
+        except FileNotFoundError:
+            logging.error(f"{self.frame_number}.png does not exist at location: {self.kitti_locations.camera_dir}!")
+            return None
+
+        return float_matrix1
 
     def get_radar_scan(self) -> Optional[np.ndarray]:
         """
