@@ -196,9 +196,17 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
     # transform info
     # transforms1 = FrameTransformMatrix(data1)
     # transforms2 = FrameTransformMatrix(data2)
-
-    transform_matrix = np.random.rand(4, 4)
-    transform_matrix[3] = [0, 0, 0, 1]
+    imu1 = data1.imu
+    imu2 = data2.imu
+    imu = np.concatenate((imu1, imu2), axis=0)
+    image1 = data1.image
+    image2 = data2.image
+    R_opt, t_opt = optimizeVIO(image1, image2, imu)
+    merged_matrix = np.hstack((R_opt, t_opt))
+    new_row = np.array([0, 0, 0, 1])
+    transform_matrix = np.vstack((merged_matrix, new_row))
+    # transform_matrix = np.random.rand(4, 4)
+    # transform_matrix[3] = [0, 0, 0, 1]
 
     # x y z RCS v_r
     zeros = np.zeros((data1.radar_data.shape[0], 1))  # 创建一个全为0的列向量
