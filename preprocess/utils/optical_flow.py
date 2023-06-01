@@ -141,31 +141,12 @@ def cam_trans(img1, img2):
 
     # 计算预测值和实际值之间的差距，即重投影误差
     reproj_error = np.sqrt(np.mean((pts2_pred - pts2) ** 2))
-
-    def optimize_func(x):
-        R_new = cv2.Rodrigues(x[:3])[0]
-        t_new = x[3:].reshape((3, 1))
-        pts2_pred, _ = cv2.projectPoints(points_3d, R_new, t_new, K, None)
-        return np.sqrt(np.mean((pts2_pred - pts2) ** 2))
-
-    x0 = np.concatenate((rvec, tvec)).ravel()
-    res = minimize(optimize_func, x0)
-    R_opt, t_opt = cv2.Rodrigues(res.x[:3])[0], res.x[3:].reshape((3, 1))
-    return R_opt, t_opt
-def IMU_trans(IMU_data):
+    return Rot, tvec, points_3d, K, pts2
+def IMU_trans(imu_data):
     # 获取第15-17列和第20-22列的数据
-    data = IMU_data.iloc[:, [0, 14, 15, 16, 19, 20, 21]]
-    imu_data = np.array(data)
-    # 打印数据
-    # print(data)
-
-    # with open('/home/zyw/odobeyondvision/2019-10-24-17-51-58/_slash_imu_slash_data.csv') as csv_file:
-    #     csv_reader = csv.reader(csv_file)
-    #     for row in csv_reader:
-    #         print(', '.join(row))
-
+    # data = IMU_data.iloc[:, [0, 14, 15, 16, 19, 20, 21]]
+    # imu_data = np.array(data)
     # 加载IMU数据
-
     # 定义变量
     dt = 0  # 采样时间
     g = np.array([0, 0, -9.8])  # 重力加速度
@@ -193,3 +174,60 @@ def IMU_trans(IMU_data):
         a = Rot_imu.dot(a) - g
         v += a * dt_i
         tans_imu += v * dt_i + 0.5 * a * dt_i ** 2
+        tans_imu1 = tans_imu.reshape((3, 1))
+        extrinsic_imu_to_cam = np.array([[-0.99973756, -0.01087666, 0.02016219, 0.03243579],
+                                        [-0.0207632, 0.05830964, -0.9980826, 0.16294065],
+                                        [0.00968016, -0.99823929, -0.05852017, 0.3316231]])
+
+        # 3x3 rotation matrix of camera coordinate system
+        R_cam = extrinsic_imu_to_cam[:, :3]
+
+        # 3x1 translation matrix of camera coordinate system
+        T_cam = extrinsic_imu_to_cam[:, 3:]
+
+        # transformation matrix from IMU to camera coordinate system
+        R_imu2cam = np.dot(R_cam, Rot_imu)  # 3x3
+        T_imu2cam = np.dot(R_cam, tans_imu1) + T_cam  # 3x1
+    return R_imu2cam, T_imu2cam, imu_data, bias_gyro_matrix, bias_acc_matrix
+
+def optimizeVIO(img1, img2, IMU_data):
+    Rot, tvec, points_3d, K, pts2 = cam_trans(img1, img2)
+    R_imu2cam, T_imu2cam, imu_data, bias_gyro_matrix, bias_acc_matrix = IMU_trans(IMU_data)
+    def optimize(x):
+        R_new = x[:9].reshape(3, 3)
+        t_new = x[9:]
+        pts2_pred, _ = cv2.projectPoints(points_3d, R_new, t_new, K, None)
+        # R_new = np.reshape(x[12:21], (3, 3))
+        # t_new  = x[21:24]
+        error = np.zeros(6)
+        # 预积分
+        v = np.zeros(3)
+        g = np.array([0, 0, -9.8])
+        for i in range(1, imu_data.shape[0]):
+            # 计算时间间隔
+            dt_i = imu_data[i, 0] - imu_data[i - 1, 0]
+            dt_i = dt_i * 10 ** -8
+            # 计算旋转增量
+            omega = (imu_data[i, 1:4] - bias_gyro_matrix.dot(imu_data[i, 1:4])) * dt_i
+            R_new = R_new.dot(np.array([[1, -omega[2], omega[1]],
+                                            [omega[2], 1, -omega[0]],
+                                            [-omega[1], omega[0], 1]]))
+
+            # 计算加速度增量
+            a = (imu_data[i, 4:7] - bias_acc_matrix.dot(imu_data[i, 4:7]))
+            a = R_new.dot(a) - g
+            v += a * dt_i
+            t_new += v * dt_i + 0.5 * a * dt_i ** 2
+            # 计算预积分误差
+            error[0:3] += (t_new - imu_data[i, 4:7]) * dt_i
+            error[3:6] += (R_new.dot(imu_data[i, 1:4]) - imu_data[i, 1:4]) * dt_i
+            return np.sqrt(np.mean((pts2_pred - pts2) ** 2)) + np.sum(error ** 2)
+
+    Rot_opt = R_imu2cam + Rot
+    Trans_opt = T_imu2cam + tvec
+
+    x0 = np.concatenate((Rot_opt, Trans_opt), axis=1).reshape(-1)
+    res = minimize(optimize, x0, method='BFGS')
+    R_opt = np.reshape(res.x[0:9], (3, 3))
+    t_opt = res.x[9:12].reshape((3, 1))
+    return R_opt, t_opt
