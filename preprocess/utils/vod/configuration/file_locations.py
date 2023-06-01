@@ -24,6 +24,8 @@ Constructor which based on a few parameters defines the locations of possible da
         # Current definitions are based on the recommended locations.
         self.camera_dir = os.path.join(self.root_dir, 'rgb_filter')
 
+        self.imu_dir = os.path.join(self.root_dir, 'imu_filter')
+
         self.lidar_dir = os.path.join(self.root_dir, 'lidar', 'training', 'velodyne')
         self.lidar_calib_dir = os.path.join(self.root_dir, 'lidar', 'training', 'calib')
 
