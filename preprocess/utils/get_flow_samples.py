@@ -202,6 +202,19 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
     image1 = data1.image
     image2 = data2.image
     R_opt, t_opt = optimizeVIO(image1, image2, imu)
+    RGB_to_mmWave = np.array([[-1.0,     0.0,     0.0,     0.032],
+                                     [0.0,     1.0,     0.0,     0.044],
+                                     [0.0,     0.0,     1.0,    -0.106]])
+
+    # 3x3 rotation matrix of camera coordinate system
+    R_radar = RGB_to_mmWave[:, :3]
+
+    # 3x1 translation matrix of camera coordinate system
+    T_radar = RGB_to_mmWave[:, 3:]
+
+    # transformation matrix from IMU to camera coordinate system
+    R_opt = np.dot(R_radar, R_opt)  # 3x3
+    t_opt = np.dot(R_radar, t_opt) + T_radar  # 3x1
     merged_matrix = np.hstack((R_opt, t_opt))
     new_row = np.array([0, 0, 0, 1])
     transform_matrix = np.vstack((merged_matrix, new_row))
