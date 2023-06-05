@@ -112,8 +112,8 @@ class vodDataset(Dataset):
         pos_1 = data_1[:,0:3]
         pos_2 = data_2[:,0:3]
 
-        feature_1 = data_1[:,[4,3,3]]
-        feature_2 = data_2[:,[4,3,3]]
+        feature_1 = data_1[:,[4,4,4]]
+        feature_2 = data_2[:,[4,4,4]]
 
         # GT labels and pseudo FG labels (from lidar)
         gt_labels = np.array(data["gt_labels"]).astype('float32')
