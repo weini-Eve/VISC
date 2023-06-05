@@ -228,14 +228,21 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
     data2.radar_data = np.hstack((data2.radar_data[:, :3], zeros, data2.radar_data[:, 3:].reshape(-1, 1)))
     radar_data1 = data1.radar_data[:, 0:5]
     radar_data2 = data2.radar_data[:, 0:5]
-    # indices1 = filt_points_in_fov(radar_data1, transforms1, 'radar')
-    # indices2 = filt_points_in_fov(radar_data2, transforms2, 'radar')
-    # radar_data1 = radar_data1[indices1]
-    # radar_data2 = radar_data2[indices2]
-    # indices1 = filt_points_by_height(radar_data1, [-3, 3])
-    # indices2 = filt_points_by_height(radar_data2, [-3, 3])
-    # radar_data1 = radar_data1[indices1]
-    # radar_data2 = radar_data2[indices2]
+    RGB_to_mmWave_extrinsic = [1.0, 0.0, 0.0, 0.128, 0.0, -1.0, 0.0, -0.044, 0.0, 0.0, -1.0, 0.106, 0.0, 0.0, 0.0, 1.0]
+    transforms1_matrix = np.array(RGB_to_mmWave_extrinsic).reshape((4, 4))
+    camera_intrinsic = [566.8943529201453, 0.0, 322.10094802162763, 0.0, 0.0, 567.7699123433893, 242.8149724252196,
+                            0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+    camera_projection_matrix = np.array(camera_intrinsic).reshape((4, 4))
+    indices1 = filt_points_in_fov_milliego(radar_data1, transforms1_matrix, 'radar')
+    indices2 = filt_points_in_fov_milliego(radar_data2, transforms1_matrix, 'radar')
+    radar_data1 = radar_data1[indices1]
+    radar_data2 = radar_data2[indices2]
+    indices1 = filt_points_by_height(radar_data1, [-3, 3])
+    indices2 = filt_points_by_height(radar_data2, [-3, 3])
+    radar_data1 = radar_data1[indices1]
+    radar_data2 = radar_data2[indices2]
+
+
 
     # for fast batch preprocess, only keep frames whose points is more than min_pnts
 
@@ -244,30 +251,25 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
     # if not (radar_data1.shape[0] < min_pnts or radar_data2.shape[0] < min_pnts):
     img1 = cv2.cvtColor(data1.image, cv2.COLOR_RGB2BGR)
     img2 = cv2.cvtColor(data2.image, cv2.COLOR_RGB2BGR)
-    img1 = cv2.resize(img1, (1936, 1216))
-    img2 = cv2.resize(img2, (1936, 1216))
     opt_flow = estimate_optical_flow(img1, img2, raft_model)
     # show_optical_flow(img1, img2, opt_flow, opt_path, frame1)
     radar_p = np.concatenate((radar_data1[:, 0:3], np.ones((radar_data1.shape[0], 1))), axis=1)
-    RGB_to_mmWave_extrinsic = [1.0, 0.0, 0.0, 0.032, 0.0, 1.0, 0.0, 0.044, 0.0, 0.0, 1.0, -0.106, 0.0, 0.0, 0.0,
-                                   1.0]
-    transforms1_matrix = np.array(RGB_to_mmWave_extrinsic).reshape((4, 4))
     radar_data_t = homogeneous_transformation(radar_p, transforms1_matrix)
-    camera_intrinsic = [566.8943529201453, 0.0, 322.10094802162763, 0.0, 0.0, 567.7699123433893, 242.8149724252196,
-                            0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
-    camera_projection_matrix = np.array(camera_intrinsic).reshape((4, 4))
     uvs = project_3d_to_2d(radar_data_t, camera_projection_matrix)
-    uvs[:, 0] = np.clip(uvs[:, 0], 0, 1936 - 1)
-    uvs[:, 1] = np.clip(uvs[:, 1], 0, 1216 - 1)
     # opt_info = info_from_opt_flow(radar_data1, transforms1, opt_flow)
     radar_opt = opt_flow[uvs[:, 1] - 1, uvs[:, 0] - 1]
-    opt_info = {"radar_u": uvs[:, 0],
-                    "radar_v": uvs[:, 1],
-                    "opt_flow": radar_opt,
+    # opt_info = {"radar_u": uvs[:, 0],
+    #                 "radar_v": uvs[:, 1],
+    #                 "opt_flow": radar_opt,
+    #                 }
+    opt_info = {"radar_u": np.array([]),
+                    "radar_v": np.array([]),
+                    "opt_flow": np.array([]),
                     }
-    gt_mask = np.zeros(radar_data1.shape[0], dtype=np.float32)
+    gt_mask = np.ones(radar_data1.shape[0], dtype=np.float32)
     gt_labels = np.zeros((radar_data1.shape[0], 3), dtype=np.float32)
-    pse_mask = np.ones(radar_data1.shape[0], dtype=np.float32)
+    gt_labels = get_rigid_flow(radar_data1, transform_matrix)
+    pse_mask = np.zeros(radar_data1.shape[0], dtype=np.float32)
     pse_labels = np.zeros((radar_data1.shape[0], 3), dtype=np.float32)
         # coordinate frame transformation from radar1 to radar2
         # odom_cam_1 = transforms1.t_odom_camera
