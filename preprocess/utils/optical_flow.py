@@ -55,7 +55,7 @@ def show_optical_flow(img1, img2, opt_flow, opt_path, frame1):
     cv2.imwrite(path, vis_img)
 
 
-def info_from_opt_flow(radar_data, transforms, opt_flow):
+def info_from_opt_flow(radar_data: object, transforms: object, opt_flow: object) -> object:
 
     radar_p = np.concatenate((radar_data[:,0:3],np.ones((radar_data.shape[0],1))),axis=1)
     radar_data_t = homogeneous_transformation(radar_p, transforms.t_camera_radar)
@@ -86,6 +86,26 @@ def filt_points_in_fov(pc_data, transforms, sensor):
          np.logical_and(uvs[:,1]>0, uvs[:,1]<=IMG_HEIGHT))
     indices = np.argwhere(filt_uv).flatten()
 
+    return indices
+
+
+def filt_points_in_fov_milliego(pc_data, transforms, sensor):
+
+    pc_h = np.concatenate((pc_data[:,0:3],np.ones((pc_data.shape[0],1))),axis=1)
+    if sensor == 'radar':
+        pc_cam = homogeneous_transformation(pc_h, transforms.t_camera_radar)
+    if sensor == 'lidar':
+        pc_cam = homogeneous_transformation(pc_h, transforms.t_camera_lidar)
+    camera_intrinsic = [566.8943529201453, 0.0, 322.10094802162763, 0.0, 0.0, 567.7699123433893, 242.8149724252196,
+                        0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+    camera_projection_matrix = np.array(camera_intrinsic).reshape((4, 4))
+    uvw = camera_projection_matrix.dot(pc_cam.T)
+    uvw /= uvw[2]
+    uvs = uvw[:2].T
+    uvs = np.round(uvs).astype(np.int_)
+    filt_uv = np.logical_and(np.logical_and(uvs[:, 0] > 0, uvs[:, 0] <= 1936), \
+                             np.logical_and(uvs[:, 1] > 0, uvs[:, 1] <= 1216))
+    indices = np.argwhere(filt_uv).flatten()
     return indices
 
 
