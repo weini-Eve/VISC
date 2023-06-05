@@ -164,11 +164,11 @@ does not exist, it returns None.
         :return: Numpy array with image data.
         """
         try:
-            img = cv2.imread(
-                os.path.join(self.kitti_locations.camera_dir, f'{self.frame_number}.png'))
+            img = plt.imread(
+                os.path.join(self.kitti_locations.camera_dir, f'{self.frame_number}.jpg'))
 
         except FileNotFoundError:
-            logging.error(f"{self.frame_number}.png does not exist at location: {self.kitti_locations.camera_dir}!")
+            logging.error(f"{self.frame_number}.jpg does not exist at location: {self.kitti_locations.camera_dir}!")
             return None
 
         return img
