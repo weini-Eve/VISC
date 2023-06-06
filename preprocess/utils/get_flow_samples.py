@@ -242,7 +242,8 @@ def get_one_sample_from_milliego(frame1, frame2, data_loc, save_path, opt_path):
     radar_data1 = radar_data1[indices1]
     radar_data2 = radar_data2[indices2]
 
-
+    radar_data1 = data_augmentation(radar_data1, transforms1_matrix, camera_projection_matrix)
+    radar_data2 = data_augmentation(radar_data2, transforms1_matrix, camera_projection_matrix)
 
     # for fast batch preprocess, only keep frames whose points is more than min_pnts
 

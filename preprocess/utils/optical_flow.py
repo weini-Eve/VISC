@@ -6,6 +6,8 @@ import yaml
 import torch
 import argparse
 import numpy as np
+from scipy.interpolate import CubicSpline
+
 from preprocess.utils.vod.frame import homogeneous_transformation, project_3d_to_2d
 from preprocess.utils.vod.visualization.settings import *
 from preprocess.utils.global_param import *
@@ -108,6 +110,40 @@ def filt_points_in_fov_milliego(pc_data, transforms, sensor):
     indices = np.argwhere(filt_uv).flatten()
     return indices
 
+def data_augmentation(radar_data, transforms1_matrix, camera_projection_matrix):
+
+    x_interp = CubicSpline(np.arange(radar_data.shape[0]), radar_data[:, 0])
+    y_interp = CubicSpline(np.arange(radar_data.shape[0]), radar_data[:, 1])
+    z_interp = CubicSpline(np.arange(radar_data.shape[0]), radar_data[:, 2])
+
+    # 在三维空间中选取125个点
+    x = np.linspace(0, 7, 10)
+    y = np.linspace(0, 7, 10)
+    z = np.linspace(0, 7, 10)
+    X, Y, Z = np.meshgrid(x, y, z)
+    coords = np.vstack([X.ravel(), Y.ravel(), Z.ravel()]).T
+
+    # 对每个选取的点计算其在三维连续函数中的值，即为该点的坐标
+    new_points = np.zeros((1024, 3))
+    for i, coord in enumerate(coords):
+        new_points[i] = [x_interp(coord[0]), y_interp(coord[1]), z_interp(coord[2])]
+
+    pc_h_new_points = np.concatenate((new_points[:, 0:3], np.ones((new_points.shape[0], 1))), axis=1)
+    radar_data_t_new_points = transforms1_matrix.dot(pc_h_new_points.T).T
+    uvw_new_points = camera_projection_matrix.dot(radar_data_t_new_points.T)
+    uvw_new_points /= uvw_new_points[2]
+    uvs_new_points = uvw_new_points[:2].T
+    uvs_new_points = np.round(uvs_new_points).astype(np.int_)
+    filt_uv_new_points = np.logical_and(np.logical_and(uvs_new_points[:, 0] > 0, uvs_new_points[:, 0] <= 1936), \
+                                        np.logical_and(uvs_new_points[:, 1] > 0, uvs_new_points[:, 1] <= 1216))
+    indices_new_points1 = np.argwhere(filt_uv_new_points).flatten()
+    new_points = new_points[indices_new_points1]
+    radar_h_new_points = new_points[:, 2]
+    ranges = [-3, 3]
+    filt_h_new_points = np.logical_and(radar_h_new_points >= ranges[0], radar_h_new_points <= ranges[1])
+    indices_new_points2 = np.argwhere(filt_h_new_points).flatten()
+    new_points1 = new_points[indices_new_points2]
+    return new_points1
 
 def cam_trans(img1, img2):
     # 创建SIFT对象
