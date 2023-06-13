@@ -90,14 +90,91 @@ def filt_points_in_fov(pc_data, transforms, sensor):
 
     return indices
 
+def filt_points_in_fov_carla(pc_data):
+    z = pc_data[:, 2]
+    mask = z >= -2.1
+    indices = np.argwhere(mask).flatten()
+    return indices
+
+def filt_points_in_project_carla(pc_data):
+    z = pc_data[:, 2]
+    y = pc_data[:, 1]
+    x = pc_data[:, 0]
+    v = pc_data[:, 4]
+
+    x_min, x_max = np.min(x), np.max(x)
+    z_min, z_max = np.min(z), np.max(z)
+    points_list = list(zip(x, y, z, v))
+    points_raw = [(p[0], p[1], p[2], p[3]) for p in points_list]
+    new_width, new_height = 1936, 1216
+    new_points = []
+    new_points1 = []
+    for p in points_raw:
+        x = p[0]
+        z = p[2]
+        new_x = int((x - x_min) / (x_max - x_min) * new_width)
+        new_z = int((1 - ((z - z_min) / (z_max - z_min))) * new_height)
+        new_x = new_x + 150
+        new_z = new_z - 430
+        if 0 < new_x < 1936 and 0 < new_z < 1216:
+            new_points.append(p)
+            new_points1.append((new_x, new_z))
+    points = np.array(new_points)
+    col1 = []
+    col2 = []
+
+    # 遍历每一个元素
+    for item in new_points1:
+        # 将元组的第一个数存储到col1列表中
+        col1.append(item[0])
+        # 将元组的第二个数存储到col2列表中
+        col2.append(item[1])
+    my_matrix = np.array(col1)
+    my_matrix1 = np.array(col2)
+    return points, my_matrix, my_matrix1
+
+def project_points_carla(pc_data):
+    z = pc_data[:, 2]
+    y = pc_data[:, 1]
+    x = pc_data[:, 0]
+    x_min, x_max = np.min(x), np.max(x)
+    z_min, z_max = np.min(z), np.max(z)
+    points_list = list(zip(x, z))
+    points_raw = [(p[0], p[1]) for p in points_list]
+    new_width, new_height = 1936, 1216
+    def map_point(p):
+        x, z = p
+        new_x = int((x - x_min) / (x_max - x_min) * new_width)
+        new_z = int((1 - ((z - z_min) / (z_max - z_min))) * new_height)
+        new_x = new_x + 150
+        new_z = new_z - 430
+        return new_x, new_z
+
+    # img = cv2.imread('/home/zyw/data/test/rgb/3733.png')
+    new_points = []
+    for p in points_raw:
+        new_x, new_z = map_point(p)
+        new_points.append((new_x, new_z))
+    col1 = []
+    col2 = []
+
+    # 遍历每一个元素
+    for item in new_points:
+        # 将元组的第一个数存储到col1列表中
+        col1.append(item[0])
+        # 将元组的第二个数存储到col2列表中
+        col2.append(item[1])
+    my_matrix = np.array(col1)
+    my_matrix1 = np.array(col2)
+    return my_matrix, my_matrix1
 
 def filt_points_in_fov_milliego(pc_data, transforms, sensor):
 
     pc_h = np.concatenate((pc_data[:,0:3],np.ones((pc_data.shape[0],1))),axis=1)
     if sensor == 'radar':
-        pc_cam = homogeneous_transformation(pc_h, transforms.t_camera_radar)
+        pc_cam = homogeneous_transformation(pc_h, transforms)
     if sensor == 'lidar':
-        pc_cam = homogeneous_transformation(pc_h, transforms.t_camera_lidar)
+        pc_cam = homogeneous_transformation(pc_h, transforms)
     camera_intrinsic = [566.8943529201453, 0.0, 322.10094802162763, 0.0, 0.0, 567.7699123433893, 242.8149724252196,
                         0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0]
     camera_projection_matrix = np.array(camera_intrinsic).reshape((4, 4))
@@ -117,14 +194,14 @@ def data_augmentation(radar_data, transforms1_matrix, camera_projection_matrix):
     z_interp = CubicSpline(np.arange(radar_data.shape[0]), radar_data[:, 2])
 
     # 在三维空间中选取125个点
-    x = np.linspace(0, 7, 10)
-    y = np.linspace(0, 7, 10)
-    z = np.linspace(0, 7, 10)
+    x = np.linspace(0, 7, 8)
+    y = np.linspace(0, 7, 8)
+    z = np.linspace(0, 7, 8)
     X, Y, Z = np.meshgrid(x, y, z)
     coords = np.vstack([X.ravel(), Y.ravel(), Z.ravel()]).T
 
     # 对每个选取的点计算其在三维连续函数中的值，即为该点的坐标
-    new_points = np.zeros((1024, 3))
+    new_points = np.zeros((512, 3))
     for i, coord in enumerate(coords):
         new_points[i] = [x_interp(coord[0]), y_interp(coord[1]), z_interp(coord[2])]
 
@@ -287,3 +364,64 @@ def optimizeVIO(img1, img2, IMU_data):
     R_opt = np.reshape(res.x[0:9], (3, 3))
     t_opt = res.x[9:12].reshape((3, 1))
     return R_opt, t_opt
+
+def imu_preintegration(imu_data, dt, g, Rot_imu, tans_imu, v, bias_gyro, bias_acc):
+    # 初始化预积分变量
+    delta_Rot = np.eye(3)
+    delta_tans = np.zeros(3)
+    delta_v = np.zeros(3)
+    delta_theta = np.zeros(3)
+    bias_gyro_matrix = np.diag(bias_gyro)  # 陀螺
+    bias_acc_matrix = np.diag(bias_acc)
+    last_time = imu_data[0, 0]
+    last_gyro = imu_data[0, 1:4] - bias_gyro
+    last_acc = imu_data[0, 4:7] - bias_acc
+
+    # 预积分循环
+    for i in range(1, imu_data.shape[0]):
+        # 读取数据
+        time = imu_data[i, 0]
+        gyro = imu_data[i, 1:4] - bias_gyro
+        acc = imu_data[i, 4:7] - bias_acc
+        delta_t = time - last_time
+        delta_t *= 1e-8
+        # 计算旋转增量
+        delta_Rot = delta_Rot.dot(exp_SO3((last_gyro + gyro) / 2 * delta_t))
+        delta_theta += (last_gyro + gyro) / 2 * delta_t
+
+        # 计算速度增量
+        delta_v += (Rot_imu.dot(last_acc) + g) * delta_t
+
+        # 计算位移增量
+        delta_tans += v * delta_t + 1 / 2 * (Rot_imu.dot(last_acc) + g) * delta_t ** 2
+
+        # 更新变量
+        last_time = time
+        last_gyro = gyro
+        last_acc = acc
+
+    # 加入偏差误差
+    delta_bias_gyro = bias_gyro_matrix.dot(delta_theta)
+    delta_bias_acc = bias_acc_matrix.dot(delta_v)
+
+    # 更新状态量
+    Rot_imu = Rot_imu.dot(exp_SO3(delta_theta - delta_bias_gyro))
+    tans_imu += delta_tans - delta_bias_acc
+    v += delta_v - g * imu_data.shape[0] * dt / 2
+
+    return Rot_imu, tans_imu
+
+
+# SO(3)指数映射
+def exp_SO3(theta):
+    theta_norm = np.linalg.norm(theta)
+    if theta_norm < 1e-12:
+        return np.eye(3)
+    else:
+        return np.eye(3) + np.sin(theta_norm) / theta_norm * skew_symmetric(theta) + (
+                    1 - np.cos(theta_norm)) / theta_norm ** 2 * skew_symmetric(theta).dot(skew_symmetric(theta))
+
+
+# 叉积矩阵
+def skew_symmetric(v):
+    return np.array([[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]])
