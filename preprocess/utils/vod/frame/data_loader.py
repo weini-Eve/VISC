@@ -164,11 +164,11 @@ does not exist, it returns None.
         :return: Numpy array with image data.
         """
         try:
-            img = plt.imread(
-                os.path.join(self.kitti_locations.camera_dir, f'{self.frame_number}.jpg'))
+            img = cv2.imread(
+                os.path.join(self.kitti_locations.camera_dir, f'{self.frame_number}.png'))
 
         except FileNotFoundError:
-            logging.error(f"{self.frame_number}.jpg does not exist at location: {self.kitti_locations.camera_dir}!")
+            logging.error(f"{self.frame_number}.png does not exist at location: {self.kitti_locations.camera_dir}!")
             return None
 
         return img
@@ -181,21 +181,46 @@ does not exist, it returns None.
         :return: Numpy array with image data.
         """
         try:
-            imu_file = os.path.join(self.kitti_locations.imu_dir, f'{self.file_id}.csv')
-            with open(imu_file, 'r') as file:
-                reader1 = csv.reader(file)
-                data1 = [row[0] for row in reader1]
-                cleaned_list1 = [eval(s) for s in data1]
-                extracted_data1 = [[lst[0], lst[14], lst[15], lst[16], lst[19], lst[20], lst[21]] for lst in cleaned_list1]
-                for row in extracted_data1:
-                    matrix1 = np.array(extracted_data1)
-                    float_matrix1 = [[float(elem) for elem in row] for row in matrix1]
-                    float_matrix1 = np.array(float_matrix1)
+            imu_file = os.path.join(self.kitti_locations.imu_dir, f'{self.file_id}.npy')
+            data = np.load(imu_file)
+
+            # 分别获取平移向量和欧拉角
+            translation = data[:, 7:10]
+            euler_angles = data[:, 10:13]
+            # with open(imu_file, 'r') as file:
+            #     reader1 = csv.reader(file)
+            #     data1 = [row[0] for row in reader1]
+            #     cleaned_list1 = [eval(s) for s in data1]
+            #     extracted_data1 = [[lst[0], lst[14], lst[15], lst[16], lst[19], lst[20], lst[21]] for lst in cleaned_list1]
+            #     for row in extracted_data1:
+            #         matrix1 = np.array(extracted_data1)
+            #         float_matrix1 = [[float(elem) for elem in row] for row in matrix1]
+            #         float_matrix1 = np.array(float_matrix1)
+            def euler_to_rotation_matrix(theta):
+                pitch = theta[0, 0]
+                yaw = theta[0, 1]
+                roll = theta[0, 2]
+                Rx = np.array([[1, 0, 0], [0, np.cos(roll), -np.sin(roll)], [0, np.sin(roll), np.cos(roll)]])
+                Ry = np.array([[np.cos(pitch), 0, np.sin(pitch)], [0, 1, 0], [-np.sin(pitch), 0, np.cos(pitch)]])
+                Rz = np.array([[np.cos(yaw), -np.sin(yaw), 0], [np.sin(yaw), np.cos(yaw), 0], [0, 0, 1]])
+                R = Rx.dot(Ry).dot(Rz)
+                return R
+
+            # 构造变换矩阵
+            def get_transform_matrix(translation, euler_angles):
+                R = euler_to_rotation_matrix(euler_angles)
+                T = np.eye(4)
+                T[:3, :3] = R
+                T[:3, 3] = translation
+                return T
+
+            # 得到变换矩阵
+            T = get_transform_matrix(translation, euler_angles)
         except FileNotFoundError:
-            logging.error(f"{self.frame_number}.png does not exist at location: {self.kitti_locations.camera_dir}!")
+            logging.error(f"{self.frame_number}.npy does not exist at location: {self.kitti_locations.camera_dir}!")
             return None
 
-        return float_matrix1
+        return T
 
     def get_radar_scan(self) -> Optional[np.ndarray]:
         """
@@ -206,12 +231,12 @@ does not exist, it returns None.
         """
 
         try:
-            radar_file = os.path.join(self.kitti_locations.radar_dir, f'{self.file_id}.mat')
-            data1 = scipy.io.loadmat(radar_file)
-            frame = data1['frame']
+            radar_file = os.path.join(self.kitti_locations.radar_dir, f'{self.file_id}.npy')
+            # data1 = scipy.io.loadmat(radar_file)
+            frame = np.load(radar_file)
 
         except FileNotFoundError:
-            logging.error(f"{self.file_id}.mat does not exist at location: {self.kitti_locations.radar_dir}!")
+            logging.error(f"{self.file_id}.npy does not exist at location: {self.kitti_locations.radar_dir}!")
             return None
 
         return frame
