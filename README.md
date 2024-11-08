@@ -9,7 +9,7 @@ This repository is an official PyTorch implementation of the paper *"MmWave Rada
 
 ## Overview
 
-![Overview](path/to/overview_image.png)
+![Overview](F:\博士1\paper\cvpr\CVPR submission\CVPR submission\figures\overview3.pdf)
 
 IncEventGS proposes a novel event camera 3D Gaussian reconstruction method by leveraging the unique characteristics of event data. The high-fidelity image is rendered from 3D Gaussian distributions of the corresponding pose, and we evaluate the Gaussian-based methods in various stages such as event accumulation and learning.
 
