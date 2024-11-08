@@ -11,6 +11,6 @@ This repository is an official PyTorch implementation of the paper *"MmWave Rada
 
 ![Overview](images/overview.jpg)
 
-IncEventGS proposes a novel event camera 3D Gaussian reconstruction method by leveraging the unique characteristics of event data. The high-fidelity image is rendered from 3D Gaussian distributions of the corresponding pose, and we evaluate the Gaussian-based methods in various stages such as event accumulation and learning.
+VIMP consists of two designs. First,we propose a recursive sensor fusion method that recursively uses the IMU measurements to compensate for the temporal drift of VIO. Second, we propose a feature-selection cross-modal learning framework. It first selects background visual features to supervise the radar’s point cloud reliably.
 
 ---
