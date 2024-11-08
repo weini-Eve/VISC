@@ -30,6 +30,6 @@ VIMP consists of two designs. First, we propose a recursive sensor fusion method
 
 ## Qualitative evaluation of motion segmentation and pose estimation on synthetic and real-world dataset.
 
-| 方法A                   | 方法B                   |
+| motion segmentation                  | pose estimation                   |
 |-------------------------|-------------------------|
-| ![方法A图片](images/detect.jpg) | ![方法B图片](images/odometry.jpg) |
+| ![motion segmentation图片](images/detect.jpg) | ![pose estimation图片](images/odometry.jpg) |
