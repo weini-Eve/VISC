@@ -22,6 +22,6 @@ VIMP consists of two designs. First, we propose a recursive sensor fusion method
 
 ## Qualitative evaluation of novel scene flow estimation on synthetic dataset.
 
-![low](images/flpw1.jpg)
+![low](images/flow1.jpg)
 
-![low](images/flpw2.jpg)
+![low](images/flow2.jpg)
