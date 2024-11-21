@@ -10,7 +10,7 @@ This repository is an official PyTorch implementation of the paper *"MmWave Rada
 ---
 
 ## News
-- The code and data will be made public once the paper is accepted. Stay tuned!
+- The code and data will be updated once the paper is accepted. Stay tuned!
 
 ---
 
