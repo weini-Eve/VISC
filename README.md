@@ -80,7 +80,7 @@ python main.py --dataset_path $DATA_PATH$ --exp_name $EXP_NAME$ --model visc
 Here, `$DATA_PATH$` is the path where you save your preprocessed scene flow samples. `$EXP_NAME$` is the name of the current experiment defined by yourself. Training logs and results will be saved under `checkpoints/$EXP_NAME$/`. Besides, you can also modify training args, such as batch size, learning rate and number of epochs, by editing the configuration file `configs.yaml`.
 # 3. Model Evaluation
 
-We provide our trained models under three folders in `checkpoints/`.
+We provide our trained models under folders in `checkpoints/`.
 
 To evaluate the trained models on the test set, please run:
 
