@@ -62,7 +62,7 @@ pip install -r requirements.txt
 conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=11.0 -c pytorch
 ```
 
-d. Install [PointNet++]((https://github.com/sshaoshuai/Pointnet2.PyTorch)) library for basic point cloud operation
+d. Install [PointNet++](https://github.com/sshaoshuai/Pointnet2.PyTorch) library for basic point cloud operation
 
 ```bash
 cd lib
