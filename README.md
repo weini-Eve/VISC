@@ -69,3 +69,12 @@ cd lib
 python setup.py install
 cd ..
 ```
+# 2. Model Training
+
+To train our models, please run:
+
+```bash
+python main.py --dataset_path $DATA_PATH$ --exp_name $EXP_NAME$ --model visc
+```
+
+Here, `$DATA_PATH$` is the path where you save your preprocessed scene flow samples. `$EXP_NAME$` is the name of the current experiment defined by yourself. Training logs and results will be saved under `checkpoints/$EXP_NAME$/`. Besides, you can also modify training args, such as batch size, learning rate and number of epochs, by editing the configuration file `configs.yaml`.
