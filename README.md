@@ -47,5 +47,5 @@ Before you run our code, please follow the steps below to build up your environm
 ```bash
 git clone git@github.com:weini-Eve/VISC.git
 
-
+## a. Clone the repository to local
 
