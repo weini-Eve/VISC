@@ -38,11 +38,11 @@ VIMP consists of two designs. First, we propose a recursive sensor fusion method
 
 # 1. Installation
 
-> Note: our code has been tested on Ubuntu 16.04/18.04 with Python 3.7, CUDA 11.1/11.0, PyTorch 1.7. It may work for other setups, but has not been tested.
+> Note: our code has been tested on Ubuntu 20.04 with Python 3.7, CUDA 11.1/11.0, PyTorch 1.7.
 
 Before you run our code, please follow the steps below to build up your environment.
 
 ## a. Clone the repository to local
 
 ```bash
-git clone https://github.com/Toytiny/CMFlow
+git clone git@github.com:weini-Eve/VISC.git
