@@ -78,3 +78,14 @@ python main.py --dataset_path $DATA_PATH$ --exp_name $EXP_NAME$ --model visc
 ```
 
 Here, `$DATA_PATH$` is the path where you save your preprocessed scene flow samples. `$EXP_NAME$` is the name of the current experiment defined by yourself. Training logs and results will be saved under `checkpoints/$EXP_NAME$/`. Besides, you can also modify training args, such as batch size, learning rate and number of epochs, by editing the configuration file `configs.yaml`.
+# 3. Model Evaluation
+
+We provide our trained models under three folders in `checkpoints/`.
+
+To evaluate the trained models on the test set, please run:
+
+```bash
+python main.py --eval --dataset_path $DATA_PATH$ --exp_name visc --model visc
+```
+
+Once the evaluation is completed, the results on different metrics will be printed. If you want to save the model outputs, please add `--save_res` in the command. The results will be saved at `checkpoints/$EXP_NAME$/results/`. To enable the visualization of the estimated scene flow and motion segmentation in BEV, please add `--vis` in the command. The visualization figures will be saved under `checkpoints/$EXP_NAME$/test_vis_flow` and `../test_vis_seg`. For scene flow visualization, the corresponding color wheel is `checkpoints/flow_encoding.png`. In the motion segmentation visualization figures, orange indicates moving points while blue is static.
