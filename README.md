@@ -45,7 +45,7 @@ Before you run our code, please follow the steps below to build up your environm
 a. Clone the repository to local
 
 ```bash
-git clone https://github.com/Toytiny/CMFlow
+git clone git@github.com:weini-Eve/VISC.git
 ```
 
 b. Set up a new environment (Python 3.7) with Anaconda
@@ -62,7 +62,7 @@ pip install -r requirements.txt
 conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=11.0 -c pytorch
 ```
 
-d. Install [PointNet++]([#](https://github.com/sshaoshuai/Pointnet2.PyTorch)) library for basic point cloud operation
+d. Install [PointNet++]((https://github.com/sshaoshuai/Pointnet2.PyTorch)) library for basic point cloud operation
 
 ```bash
 cd lib
