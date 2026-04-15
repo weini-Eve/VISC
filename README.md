@@ -20,6 +20,18 @@ VIMP consists of two designs. First, we propose a recursive sensor fusion method
 
 ---
 
+# 1. Installation
+
+> Note: our code has been tested on Ubuntu 20.04 with Python 3.7, CUDA 11.1/11.0, PyTorch 1.7.
+
+Before you run our code, please follow the steps below to build up your environment.
+
+## a. Clone the repository to local
+
+```bash
+git clone https://github.com/Toytiny/CMFlow
+
+
 ## Qualitative evaluation of novel scene flow estimation on synthetic dataset.
 
 ![low](images/flow1.jpg)
