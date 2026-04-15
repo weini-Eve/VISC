@@ -46,7 +46,7 @@ Before you run our code, please follow the steps below to build up your environm
 
 ```bash
 git clone git@github.com:weini-Eve/VISC.git
-
+```bash
 ## b. Set up a new environment (Python 3.7) with Anaconda
 
 ```bash
