@@ -46,3 +46,23 @@ Before you run our code, please follow the steps below to build up your environm
 
 ```bash
 git clone git@github.com:weini-Eve/VISC.git
+
+## b. Set up a new environment (Python 3.7) with Anaconda
+
+```bash
+conda create -n $ENV_NAME$ python=3.7
+source activate $ENV_NAME$
+
+## c. Install common dependencies and pytorch
+
+```bash
+pip install -r requirements.txt
+conda install pytorch==1.7.0 torchvision==0.8.0 torchaudio==0.7.0 cudatoolkit=11.0 -c pytorch
+
+## d. Install PointNet++ library for basic point cloud operation
+
+```bash
+cd lib
+python setup.py install
+cd ..
+
